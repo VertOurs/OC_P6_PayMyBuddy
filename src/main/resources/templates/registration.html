@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/styleR.css" />
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+            crossorigin="anonymous"
+    >
+    <title>Registration - Pay my Buddy</title>
+</head>
+
+<body>
+<main>
+<!--    action="#" method="post" th:action="@{/registration}" th:object="${user}"-->
+    <form class="form-signin text-center"  >
+        <!-- -------------------------------------------------------------------------------------------------------------Logo pay my Buddy -->
+        <img class="mb-4" src="/img/logo.jpeg" alt="" width="150" height="60">
+
+        <!------------------------------------------------------------------------------------------------------------------ First name -->
+        <div class="form-floating mb-3">
+<!--            th:field="*{firstName}"-->
+            <input  type="text" name="firstName" class="form-control">
+            <label>First name</label>
+            <div class="col-sm-4">
+<!--                th:errors="*{firstName}"-->
+                <span class="text-danger" ></span>
+            </div>
+        </div>
+
+        <!--------------------------------------------------------------------------------------------------------------------- Last name -->
+        <div class="form-floating mb-3">
+<!--            th:field="*{lastName}"-->
+            <input  type="text" name="lastName" class="form-control">
+            <label>Last name</label>
+            <div class="col-sm-4">
+<!--                th:errors="*{lastName}"-->
+                <span class="text-danger"  ></span>
+            </div>
+        </div>
+
+        <!---------------------------------------------------------------------------------------------------------------------------- Email -->
+        <div class="form-floating mb-3">
+<!--            th:field="*{email}"-->
+            <input  type="email" name="email" class="form-control">
+            <label>Email</label>
+            <div class="col-sm-4">
+<!--                th:errors="*{email}"-->
+                <span class="text-danger"  ></span>
+            </div>
+        </div>
+
+        <!------------------------------------------------------------------------------------------------------------------------------ password -->
+        <div class="form-floating mb-3">
+<!--            th:field="*{password}"-->
+            <input  type="password" name="password" class="form-control">
+            <label class="form-label">Password</label>
+            <div class="col-sm-4">
+<!--                th:errors="*{password}"-->
+                <span class="text-danger"  ></span>
+            </div>
+        </div>
+
+        <!----------------------------------------------------------------------------------------------------------------------------------- Register -->
+        <button type="submit" class="btn btn-primary">Register</button>
+    </form>
+</main>
+
+</body>
+</html>

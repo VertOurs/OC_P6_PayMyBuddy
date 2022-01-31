@@ -1,0 +1,18 @@
+body
+{
+    display: flex;
+    justify-content: center;
+    height : 100vh;
+    align-items: center;
+}
+main {
+    border: solid;
+    border-width: thin;
+    border-color: gray ;
+    border-radius: 5% ;
+    width: 30%;
+    min-height: 500;
+    padding: 2em;
+}
+
+
