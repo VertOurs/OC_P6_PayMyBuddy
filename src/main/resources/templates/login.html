@@ -14,30 +14,21 @@
 
 <body>
 <main >
-    <form action="#" method="post" th:action="@{/login}" th:object="${watchlistItem}"
+    <form action="#" method="post" th:action="@{/login}"
           class="form-signin text-center">
-        <!-- Logo pay my Buddy -->
-        <img class="mb-4" src="logo.jpeg" alt="" width="150" height="60">
-
-        <!-- email -->
-        <div class="form-floating mb-3">
-            <input type="email" name="email" class="form-control" id="disabledInput" >
-            <label for="floatingInput">Email</label>
+        <img class="mb-4" src="images/logo.jpeg" alt="" width="150" height="60">
+        <div th:if="${param.error}">
+            Invalid username and password.
         </div>
-
-        <!-- password -->
-        <div class="form-floating mb-3">
-            <input type="password" name="password" class="form-control" id="disabledInput">
-            <label for="floatingPassword" class="form-label">Password</label>
+        <!-- Email -->
+        <div class="mb-3">
+            <input type="text" class="form-control" placeholder="Email" name="email">
         </div>
-
-        <!-- Remenber me -->
-        <div class="mb-3 checkbox">
-            <input type="checkbox" class="form-check-input" id="exampleCheck1">
-            <label class="form-check-label" for="exampleCheck1">Remember me</label>
+        <!--Password -->
+        <div class="mb-3">
+                <input type="password" class="form-control" placeholder="Password" name="password">
         </div>
-
-        <!-- Login -->
+        <!--Submit button -->
         <button type="submit" class="btn btn-primary">Login</button>
     </form>
 </main>

@@ -2,7 +2,9 @@ package fr.vertours.buddtwo.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
 public class LoginController {
@@ -16,4 +18,9 @@ public class LoginController {
     public ModelAndView showLoginPageFromRegistration() {
         return new ModelAndView("login");
     }
+
+//    @PostMapping("/login")
+//    public ModelAndView submitLoginPage() {
+//        return new ModelAndView(new RedirectView("/home"));
+//    }
 }
