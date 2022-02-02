@@ -1,5 +1,6 @@
 package fr.vertours.buddtwo.configuration;
 
+import fr.vertours.buddtwo.model.User;
 import fr.vertours.buddtwo.service.UserService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -20,8 +21,10 @@ public class DataBaseConfig {
     @Bean
     public CommandLineRunner demo() {
         return args -> {
-            userService.saveUser("Arthur", "Pons", "ap@mail.com", passwordEncoder.encode("nope"));
-            userService.saveUser("Angelina", "Dupond", "ad@mail.com", passwordEncoder.encode( "biz"));
+            User arthur = new User("Arthur", "Pons", "ap@mail.com", "nope");
+            userService.saveUserByUser(arthur);
+            User angelina = new User("Angelina", "Dupond", "ad@mail.com",  "biz");
+            userService.saveUserByUser(angelina);
         };
     }
 }

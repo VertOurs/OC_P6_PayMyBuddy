@@ -30,7 +30,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         String[] resources = new String[] {
-                "/","index", "/css/**", "/images/**", "/registration"};
+                "/","index", "/css/**", "/images/**", "/registration/**", "/h2-console/**"};
 
 //******************ACCEES CONSOLE H2**********************************************
 

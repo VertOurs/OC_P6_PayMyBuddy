@@ -5,12 +5,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-public class IndexController {
+public class LoginController {
 
-
-    @GetMapping
-    public ModelAndView showBuddyIndexPage() {
-        ModelAndView mv = new ModelAndView("index");
-        return mv;
+    @GetMapping("/login")
+    public ModelAndView showLoginPage() {
+        return new ModelAndView("login");
     }
 }
