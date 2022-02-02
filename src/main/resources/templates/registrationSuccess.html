@@ -13,16 +13,20 @@
 </head>
 <body>
     <main >
+        <div class="text-center">
 <!--            logo de l'appli -->
             <img class="mb-4" src="images/logo.jpeg" alt="" width="150" height="60">
 <!--            le logo de réussite-->
-            <img class="mb-4" src="images/successRegistration.jpeg">
+            <img class="mb-4" src="images/CocheVerte.png">
 <!--            le texte de reussite-->
             <div>
-                <p id="yo">yo</p>
+                <p>Congratulations,<br>
+                    you have just created an account in our application.<br>
+                    Log in now to start using it.</p>
             </div>
 <!--               le bouton de lien vers login -->
-            <button type="submit" class="btn btn-primary">Register</button>
+            <a class="btn btn-primary btn-block mx-5" type="button" th:href="@{login}">Log In</a>
+        </div>
     </main>
 </body>
 </html>

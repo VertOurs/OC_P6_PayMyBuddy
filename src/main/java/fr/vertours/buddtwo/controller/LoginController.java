@@ -11,4 +11,9 @@ public class LoginController {
     public ModelAndView showLoginPage() {
         return new ModelAndView("login");
     }
+
+    @GetMapping("/registration/login")
+    public ModelAndView showLoginPageFromRegistration() {
+        return new ModelAndView("login");
+    }
 }
