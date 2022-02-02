@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <link 
@@ -8,7 +8,7 @@
         integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" 
         crossorigin="anonymous"
     >
-    <link rel="stylesheet" href="styleHo.css" />
+    <link rel="stylesheet" href="css/styleHo.css" />
     <title>Home - Pay My Buddy</title>
 </head>
 <body>
@@ -17,7 +17,7 @@
         <!-- Options -->
         <nav id="navMenu" class="navbar navbar-expand-lg navbar-light bg-white p-0 m-0">
             <div>
-                <img class="m-0 width-0" src="logo.jpeg" alt="" width="145">
+                <img class="m-0 width-0" src="images/logo.jpeg" alt="" width="145">
             </div>
             <div class="flex-row-reverse">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
@@ -45,130 +45,20 @@
         </div>
     </section>
 
-    <!-- BODY -->
-    <section id="bodyPart">
-        <!-- titre 1 et bouton -->
-        <div id="titreBouton">
-            <div id="titleSM">
-                <p id="sendMoney">Application account information</p>
-            </div>
+    <!-- MAIN -->
+    <main >
+        <!-- Block 1 -->
+        <div class="divTitre mb-2">
+                <h1>Application account information</h1>
         </div>
-        <!-- formulaire information Account -->
-        <div id="firstBloc">
-            <div class="pasID" >
-                <div>
-                    <p>Name Account : <span>PRENON</span> <span>NOM</span> </p>
+        <div class="blockWithInfoOnly" th:object="${homeDTO}">
+                <div class="blockInsideInfoOnly">
+                    <p>Name Account : <span th:text="${homeDTO.}" >???</span> <span>???</span> </p>
                 </div>
-                <div>
-                    <p>BALANCE : <span>0</span>€</p>
+                <div class="blockInsideInfoOnly">
+                    <p>BALANCE : <span>???</span> €</p>
                 </div>
-            </div>
         </div>
-
-        <!-- titre 2 -->
-        <div id="titreBouton">
-            <div id="titleSM">
-                <p id="sendMoney">Credit/Debit Application</p>
-            </div>
-        </div>
-        <div id="yolo">
-            <p>Send money on the application from credit card :</p>
-        </div>
-        <!-- formulaire 1 -->
-        <div id="doubleBloc">
-            <div class="row pasID">
-                <!-- select CreditCard-->
-                <div class="col">
-                    <select class="form-select">
-                        <Option class=>Select A Credit Card</Option>
-                    </select>
-                </div>
-                <!-- 0€-->
-                <div class="col">
-                    <input type="number" class="form-control" placeholder="0€">
-                </div>
-                <!-- Bouton credit -->
-                <div class="col">
-                    <button class="btn btn-success col-12" type="submit">Credit application</button>
-                </div>
-            </div>
-        </div>
-        <div id="yolo">
-            <p>Withdraw money from the application to credit card :</p>
-        </div>
-        <!-- formulaire 2-->
-        <div id="doubleBloc">
-            <div class="row pasID">
-                <!-- select Credit cards-->
-                <div class="col">
-                    <select class="form-select">
-                        <Option class=>Select A credit Cards</Option>
-                    </select>
-                </div>
-                <!-- 0€-->
-                <div class="col">
-                    <input type="number" class="form-control" placeholder="0€">
-                </div>
-                <!-- Bouton pay -->
-                <div class="col">
-                    <button class="btn btn-success col-12" type="submit">Debit application</button>
-                </div>
-            </div>
-        </div>
-        <!-- titre 3 -->
-        <div id="titreBouton">
-            <div id="titleSM">
-                <p id="sendMoney">My Banking Transfers</p>
-            </div>
-        </div>
-        <!-- le tableau qui va bien -->
-        <div class="row justify-content-center">
-            <div class="col-12">
-                <table>
-                    <thead >
-                        <tr>
-                            <th class="fourC20">Date</th>
-                            <th class="fourC35">Description</th>
-                            <th class="fourC35">Credit card number</th>
-                            <th class="fourC10">Amount</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td> 12/14/2021</td>
-                            <td>LaserGame</td>
-                            <td>7852 8563 9372 8921</td>
-                            <td>- 80€</td>
-                        </tr>
-                        <tr>
-                            <td>12/04/2021</td>
-                            <td>first Credit</td>
-                            <td>7852 8563 9372 8921</td>
-                            <td>25 €</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        
-        <!-- la pagination -->
-        <nav aria-label="Page navigation example">
-            <ul class="pagination justify-content-center">
-              <li class="page-item">
-                <a class="page-link" href="#" aria-label="Previous">
-                  <span aria-hidden="true">&laquo;</span>
-                </a>
-              </li>
-              <li class="page-item"><a class="page-link" href="#">1</a></li>
-              <li class="page-item"><a class="page-link" href="#">2</a></li>
-              <li class="page-item"><a class="page-link" href="#">3</a></li>
-              <li class="page-item">
-                <a class="page-link" href="#" aria-label="Next">
-                  <span aria-hidden="true">&raquo;</span>
-                </a>
-              </li>
-            </ul>
-          </nav>
-    </section>
+    </main>
 </body>
 </html>

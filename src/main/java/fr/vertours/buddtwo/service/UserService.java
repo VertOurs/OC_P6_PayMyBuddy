@@ -1,5 +1,7 @@
 package fr.vertours.buddtwo.service;
 
+import fr.vertours.buddtwo.configuration.MyUserDetails;
+import fr.vertours.buddtwo.dto.HomeDTO;
 import fr.vertours.buddtwo.dto.RegistrationDTO;
 import fr.vertours.buddtwo.exception.EmailAlreadyPresentException;
 import fr.vertours.buddtwo.model.User;
@@ -48,5 +50,14 @@ public class UserService {
         if(isUserExist.isPresent()) {
             throw new EmailAlreadyPresentException(email);
         }
+    }
+
+    public HomeDTO findHomeDTOByMyUserDetails(MyUserDetails myUD) {
+        User user = userRepository.findByEmail(myUD.getUsername());
+        HomeDTO dto = new HomeDTO();
+        dto.setFirstName(user.getFirstName());
+        dto.setLastName(user.getLastName());
+        dto.setBalance(String.valueOf(user.getBuddyBalance()));
+        return dto;
     }
 }

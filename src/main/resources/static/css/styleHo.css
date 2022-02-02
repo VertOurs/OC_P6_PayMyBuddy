@@ -2,7 +2,20 @@ body {
     height : 100%;
     padding: 0;
     margin: 0;
-    
+
+}
+main {
+    height: 100vh;
+    padding-left: 20em;
+    padding-right: 20em;
+
+}
+h1 {
+    padding: 0;
+    margin: 0;
+    color: black;
+    font-weight: bolder;
+    font-size: larger;
 }
 #navMenu {
     display: flex;
@@ -12,95 +25,35 @@ body {
     font-size: large;
     color: #0d6efd;
     background-color: #e4e8ed ;
-    
+
 }
-#home {
+#home
+{
     color: darkgray;
 }
-#bodyPart {
-    height: 100vh;
-    padding-left: 20em;
-    padding-right: 20em;
-       
-}
-.titreBouton {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    padding: 0;
+.divTitre
+{
     margin: 0;
-    padding-top: 1em;
+    padding: 1em 0 0;
 }
-#titleSM {
-    padding: 0;
-    margin: 0;
-    color: black;
-    font-weight: bolder;
-    font-size: larger;
-    justify-content: end;
-    vertical-align: bottom;
-    
-}
-#firstBloc {
+.blockWithInfoOnly
+{
     background-color: #e4e8ed;
     width: 100%;
-    height: 5em ;
+    height: 5em;
+    display: flex;
+    justify-content: space-between;
+}
+.blockInsideInfoOnly
+{
     display: flex;
     justify-content: center;
     align-items: center;
-}
-#doubleBloc {
-    background-color: #e4e8ed;
-    width: 100%;
-    padding-bottom: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    padding-left: 5em;
+    padding-right: 10em;
 }
 
-.pasID {
-    width: 80%;
-    display: flex;
-    justify-content: space-between;
 
-}
 
-#sendMany {
-    margin: 0;
-    padding: 0;
-}
-#yolo {
-    border: solid #e4e8ed;
-    background-color: #e4e8ed;
-    text-align: left;
-    vertical-align: bottom;
-}
-table {
-    table-layout: fixed;
-    width: 100%;
-    text-align: center;
-    outline: solid 2px;
-    margin-bottom: 1em;
-}
-tr:nth-child(odd) {
-    background-color: #e4e8ed;
-  }
 
-th {
-    background-color: #198754;
-    color: white;
-    font-size: large;
-    height: 80px;
-}
-td {
-    height: 60px;
-}
-.fourC35 {
-    width: 35%;
-}
-.fourC20 {
-    width: 20%;
-}
-.fourC10 {
-    width: 10%;
-}
+
