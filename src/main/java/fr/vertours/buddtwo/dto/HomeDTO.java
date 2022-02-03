@@ -2,28 +2,36 @@ package fr.vertours.buddtwo.dto;
 
 public class HomeDTO {
 
-    private String FirstName;
-    private String LastName;
-    private String Balance;
+    private String firstName;
+    private String lastName;
+    private String balance;
+    private String bankName;
 
     public String getFirstName() {
-        return FirstName;
+        return firstName;
     }
     public void setFirstName(String firstName) {
-        FirstName = firstName;
+        this.firstName = firstName;
     }
 
     public String getLastName() {
-        return LastName;
+        return lastName;
     }
     public void setLastName(String lastName) {
-        LastName = lastName;
+        this.lastName = lastName;
     }
 
     public String getBalance() {
-        return Balance;
+        return balance;
     }
     public void setBalance(String balance) {
-        Balance = balance;
+        this.balance = balance;
+    }
+
+    public String getBankName() {
+        return bankName;
+    }
+    public void setBankName(String bankName) {
+        this.bankName = bankName;
     }
 }

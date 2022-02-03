@@ -46,18 +46,30 @@
     </section>
 
     <!-- MAIN -->
-    <main >
+    <main th:object="${dto}">
         <!-- Block 1 -->
-        <div class="divTitre mb-2">
+        <div class="divTitre mb-2" >
                 <h1>Application account information</h1>
         </div>
-        <div class="blockWithInfoOnly" th:object="${homeDTO}">
+        <div class="blockWithInfoOnly">
                 <div class="blockInsideInfoOnly">
-                    <p>Name Account : <span th:text="${homeDTO.}" >???</span> <span>???</span> </p>
+                    <p>Name Account : <span th:text="*{firstName}" >???</span > <span th:text="*{lastName}">???</span> </p>
                 </div>
                 <div class="blockInsideInfoOnly">
-                    <p>BALANCE : <span>???</span> €</p>
+                    <p>BALANCE : <span th:text="*{balance}">???</span> €</p>
                 </div>
+        </div>
+<!--        Block 2-->
+        <div class="divTitre mb-2 mt-5" >
+            <h1>BankAccount information</h1>
+        </div>
+        <div class="blockWithInfoOnly">
+            <div class="blockInsideInfoOnly">
+                <p>Name of bank Account : <span th:text="*{bankName}">???</span ></p>
+            </div>
+            <div class="blockInsideInfoOnly">
+                <a class="btn btn-primary btn-block mx-5" type="button" th:href="@{addBank}"> add Bank Account</a>
+            </div>
         </div>
     </main>
 </body>

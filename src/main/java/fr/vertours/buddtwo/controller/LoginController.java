@@ -19,8 +19,5 @@ public class LoginController {
         return new ModelAndView("login");
     }
 
-//    @PostMapping("/login")
-//    public ModelAndView submitLoginPage() {
-//        return new ModelAndView(new RedirectView("/home"));
-//    }
+
 }
