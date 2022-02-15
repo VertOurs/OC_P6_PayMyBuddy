@@ -8,7 +8,6 @@ main {
     height: 100vh;
     padding-left: 20em;
     padding-right: 20em;
-
 }
 h1 {
     padding: 0;
@@ -27,7 +26,7 @@ h1 {
     background-color: #e4e8ed ;
 
 }
-#home
+.greyNav
 {
     color: darkgray;
 }
@@ -51,6 +50,39 @@ h1 {
     align-items: center;
     padding-left: 5em;
     padding-right: 10em;
+}
+table {
+    table-layout: fixed;
+    width: 100%;
+    text-align: center;
+    outline: solid 2px;
+    margin-bottom: 1em;
+    margin-top: 5px;
+}
+tr:nth-child(odd) {
+    background-color: #e4e8ed;
+}
+
+th {
+    background-color: #198754;
+    color: white;
+    font-size: large;
+    height: 80px;
+}
+td {
+    height: 60px;
+}
+.threeCol {
+    width: 33%;
+}
+.fiveCol20 {
+    width: 20%;
+}
+.fiveCol50 {
+    width: 50%;
+}
+.fiveCol10 {
+    width: 10%;
 }
 
 

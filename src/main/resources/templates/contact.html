@@ -22,7 +22,7 @@
             <div class="flex-row-reverse">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item text-end">
-                        <a class="nav-link active text-primary " aria-current="page" href="#">Home</a>
+                        <a lass="nav-link" aria-current="page" href="#" th:href="@{home}">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" aria-current="page" href="#" th:href="@{transfer}">Transfer</a>
@@ -31,7 +31,7 @@
                         <a class="nav-link" aria-current="page" href="#" th:href="@{profile}" >Profile</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="#" th:href="@{contact}">Contact</a>
+                        <a class="nav-link active text-primary " aria-current="page" href="#">Contact</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" aria-current="page" href="#" th:href="@{logoff}">Log off</a>
@@ -39,38 +39,37 @@
                 </ul>
             </div>
         </nav>
-        <!-- Home / Transfer -->
+        <!-- Home / Contact -->
         <div id="navBar" class="navbar-expand-lg p-1">
-            <p> Home / <span class="greyNav">Home</span></p>
+            <p> Home / <span class="greyNav">Contact</span></p>
         </div>
     </section>
 
-    <!-- MAIN -->
+    <!-- main -->
     <main th:object="${dto}">
         <!-- Block 1 -->
-        <div class="divTitre mb-2" >
-                <h1>Application account information</h1>
+        <div id="divTitre mb-2 mt-2">
+            <h1>My Connections</h1>
         </div>
-        <div class="blockWithInfoOnly">
-                <div class="blockInsideInfoOnly">
-                    <p>Name Account : <span th:text="*{firstName}" >???</span > <span th:text="*{lastName}">???</span> </p>
-                </div>
-                <div class="blockInsideInfoOnly">
-                    <p>BALANCE : <span th:text="*{balance}">???</span> €</p>
-                </div>
-        </div>
-<!--        Block 2-->
-        <div class="divTitre mb-2 mt-5" >
-            <h1>BankAccount information</h1>
-        </div>
-        <div class="blockWithInfoOnly">
-            <div class="blockInsideInfoOnly">
-                <p>Name of bank Account : <span th:text="*{bankName}">???</span ></p>
-            </div>
-            <div class="blockInsideInfoOnly">
-                <a class="btn btn-primary btn-block mx-5" type="button" th:href="@{addBank}" th:if="${!dto.hasBankAccount}" > linked to a bank account</a>
-                <a class="btn btn-primary btn-block mx-5" type="button" th:href="@{addBank}" th:if="${dto.hasBankAccount}" >  Update Bank Account</a>
-            </div>
+        <table>
+            <thead >
+            <tr>
+                <th class="threeCol">FirstName</th>
+                <th class="threeCol">LastName</th>
+                <th class="threeCol">Email</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td th:text="${dto.firstName}"> Martin</td>
+                <td th:text="${dto.lastName}">Dupond</td>
+                <td th:text="${dto.email}">martin-dupond@gmail.com</td>
+            </tr>
+            </tbody>
+        </table>
+        <div>
+            <a class="btn btn-primary btn-block mx-5" type="button" th:href="@{addFriend}" >Save a new friend</a>
+            <a class="btn btn-primary btn-block mx-5" type="button" th:href="@{delFriend}" >Delete a friend</a>
         </div>
     </main>
 </body>

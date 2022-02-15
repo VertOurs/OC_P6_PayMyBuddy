@@ -35,4 +35,13 @@ public class AddBankDTO {
     public void setCustomizeName(String customizeName) {
         this.customizeName = customizeName;
     }
+
+    @Override
+    public String toString() {
+        return "AddBankDTO{" +
+                "iban='" + iban + '\'' +
+                ", bic='" + bic + '\'' +
+                ", customizeName='" + customizeName + '\'' +
+                '}';
+    }
 }

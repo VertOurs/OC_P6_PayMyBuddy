@@ -6,6 +6,7 @@ public class HomeDTO {
     private String lastName;
     private String balance;
     private String bankName;
+    private boolean hasBankAccount;
 
     public String getFirstName() {
         return firstName;
@@ -34,4 +35,10 @@ public class HomeDTO {
     public void setBankName(String bankName) {
         this.bankName = bankName;
     }
+
+    public boolean isHasBankAccount() {
+        return bankName != null;
+    }
+
+
 }

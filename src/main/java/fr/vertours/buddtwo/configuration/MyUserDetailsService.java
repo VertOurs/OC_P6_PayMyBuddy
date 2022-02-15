@@ -20,7 +20,7 @@ public class MyUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user= userRepository.findByEmail(email);
-        UserDetails userDetails = new MyUserDetails(user.getRoleList(), user.getPassword(), user.getEmail());
+        UserDetails userDetails = new MyUserDetails(user.getRoleList(), user.getPassword(), user.getEmail(), user);
         return userDetails;
     }
 }

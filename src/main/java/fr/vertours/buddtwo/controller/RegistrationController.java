@@ -2,8 +2,7 @@ package fr.vertours.buddtwo.controller;
 
 import fr.vertours.buddtwo.dto.RegistrationDTO;
 import fr.vertours.buddtwo.exception.EmailAlreadyPresentException;
-import fr.vertours.buddtwo.model.User;
-import fr.vertours.buddtwo.service.UserService;
+import fr.vertours.buddtwo.service.RegistrationService;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,12 +16,13 @@ import javax.validation.Valid;
 @Controller
 public class RegistrationController {
 
-    UserService userService;
+    private final RegistrationService service;
 
-    public RegistrationController(UserService userService) {
-        this.userService = userService;
+    public RegistrationController(RegistrationService service) {
+        this.service = service;
     }
-    @GetMapping("/registration/success")
+
+    @GetMapping("/registrationSuccess")
     public ModelAndView showSuccessPage() {
         return new ModelAndView("registrationSuccess");
     }
@@ -40,12 +40,12 @@ public class RegistrationController {
             return new ModelAndView("registration");
         }
         try {
-            userService.saveUserByRegistrationDTO(regDTO);
+            service.saveUserByRegistrationDTO(regDTO);
         } catch (EmailAlreadyPresentException e) {
             bindingResult.rejectValue("email","",e.getMessage());
             return new ModelAndView("registration");
         }
 
-        return new ModelAndView(new RedirectView("/registration/success"));
+        return new ModelAndView(new RedirectView("/registrationSuccess"));
     }
 }

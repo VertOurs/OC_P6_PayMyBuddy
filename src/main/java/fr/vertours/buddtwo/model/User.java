@@ -25,7 +25,7 @@ public class User {
     @Column
     private String password;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "user_friend",
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "friend_id")})
@@ -114,5 +114,14 @@ public class User {
     }
     public void setRoleList(List<Role> role) {
         this.roleList = role;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                '}';
     }
 }

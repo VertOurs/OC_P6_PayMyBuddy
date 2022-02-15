@@ -32,6 +32,10 @@ public class BankAccount {
         this.customizeName = customizeName;
     }
 
+    public BankAccount(User user) {
+        this.user = user;
+    }
+
     public long getId() {
         return id;
     }

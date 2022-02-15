@@ -1,5 +1,6 @@
 package fr.vertours.buddtwo.validation;
 
+import fr.vertours.buddtwo.dto.ChangePasswordDTO;
 import fr.vertours.buddtwo.dto.RegistrationDTO;
 
 import javax.validation.ConstraintValidator;
@@ -10,8 +11,6 @@ public class PasswordConfirmationValidator implements ConstraintValidator <Passw
 
     @Override
     public boolean isValid(RegistrationDTO regDTO, ConstraintValidatorContext constraintValidatorContext) {
-
-
         return regDTO.getPassword().equals(regDTO.getConfirmation());
     }
 }

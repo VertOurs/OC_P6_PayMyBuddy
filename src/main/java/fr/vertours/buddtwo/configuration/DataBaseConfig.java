@@ -1,7 +1,7 @@
 package fr.vertours.buddtwo.configuration;
 
 import fr.vertours.buddtwo.model.User;
-import fr.vertours.buddtwo.service.UserService;
+import fr.vertours.buddtwo.service.UserServiceImpl;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,11 +10,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @Configuration
 public class DataBaseConfig {
 
-    private UserService userService;
+    private UserServiceImpl userServiceImpl;
     private BCryptPasswordEncoder passwordEncoder;
 
-    public DataBaseConfig(UserService userService, BCryptPasswordEncoder passwordEncoder) {
-        this.userService = userService;
+    public DataBaseConfig(UserServiceImpl userServiceImpl, BCryptPasswordEncoder passwordEncoder) {
+        this.userServiceImpl = userServiceImpl;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -22,9 +22,25 @@ public class DataBaseConfig {
     public CommandLineRunner demo() {
         return args -> {
             User arthur = new User("Arthur", "Pons", "ap@mail.com", "nope");
-            userService.saveUserByUser(arthur);
+            userServiceImpl.saveUserByUser(arthur);
             User angelina = new User("Angelina", "Dupond", "ad@mail.com",  "biz");
-            userService.saveUserByUser(angelina);
+            userServiceImpl.saveUserByUser(angelina);
+            User bob = new User("Bob", "Petronel", "bp@mail.com","aze");
+            userServiceImpl.saveUserByUser(bob);
+            User benoit = new User("Benoit", "bierrard", "bb@mail.com", "zut");
+            userServiceImpl.saveUserByUser(benoit);
+            User melanie = new User("Mélanie", "Jordy", "mj@mail.com", "mel");
+            userServiceImpl.saveUserByUser(melanie);
+
+//            userServiceImpl.addFriendInFriendList(arthur, angelina);
+//            userServiceImpl.addFriendInFriendList(arthur, bob);
+//            userServiceImpl.addFriendInFriendList(arthur, benoit);
+//            userServiceImpl.addFriendInFriendList(arthur, melanie);
+//            userServiceImpl.addFriendInFriendList(melanie, angelina);
+//
+//            userServiceImpl.testdestrucs(arthur);
+//            userServiceImpl.testdestrucs(angelina);
+
         };
     }
 }

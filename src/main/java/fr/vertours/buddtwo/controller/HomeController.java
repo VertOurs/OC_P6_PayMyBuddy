@@ -3,9 +3,9 @@ package fr.vertours.buddtwo.controller;
 import fr.vertours.buddtwo.configuration.MyUserDetails;
 import fr.vertours.buddtwo.dto.AddBankDTO;
 import fr.vertours.buddtwo.dto.HomeDTO;
-import fr.vertours.buddtwo.dto.RegistrationDTO;
-import fr.vertours.buddtwo.exception.EmailAlreadyPresentException;
-import fr.vertours.buddtwo.service.UserService;
+import fr.vertours.buddtwo.service.HomeBankService;
+import fr.vertours.buddtwo.service.HomeUserService;
+
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -20,16 +20,17 @@ import javax.validation.Valid;
 @Controller
 public class HomeController {
 
-    UserService userService;
+    HomeUserService userService;
+    HomeBankService bankService;
 
-    public HomeController(UserService userService) {
+    public HomeController(HomeUserService userService, HomeBankService bankService) {
         this.userService = userService;
+        this.bankService = bankService;
     }
 
     @GetMapping("/home")
     public ModelAndView showHomePage(@AuthenticationPrincipal MyUserDetails myUD) {
-        HomeDTO homeDTO = userService.findHomeDTOByMyUserDetails(myUD);
-
+        HomeDTO homeDTO =  userService.findHomeDTOByMyUserDetails(myUD);
         ModelAndView mv = new ModelAndView("home");
         mv.addObject("dto", homeDTO);
         return mv;
@@ -43,16 +44,11 @@ public class HomeController {
     }
 
     @PostMapping("/addBank")
-    public ModelAndView submitAddBankForm(@Valid
-                                              @ModelAttribute("addBankDTO")
-                                                      AddBankDTO addBankDTO,
-                                          @AuthenticationPrincipal
-                                                  MyUserDetails myUD,
-                                          BindingResult bindingResult) {
+    public ModelAndView submitAddBankForm(@Valid @ModelAttribute("addBankDTO") AddBankDTO addBankDTO, BindingResult bindingResult, @AuthenticationPrincipal MyUserDetails myUD) {
         if(bindingResult.hasErrors()){
             return new ModelAndView("addBank");
         }
-            userService.saveNewBankAccount(addBankDTO, myUD);
+            bankService.saveBankAccount(addBankDTO, myUD);
 
         return new ModelAndView(new RedirectView("/home"));
     }
