@@ -1,5 +1,8 @@
 package fr.vertours.buddtwo.model;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -25,7 +28,7 @@ public class User {
     @Column
     private String password;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "user_friend",
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "friend_id")})
@@ -37,11 +40,14 @@ public class User {
     @OneToOne(mappedBy = "user", optional = true, cascade = CascadeType.REMOVE)
     private BankAccount bankAccount;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany()
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Role> roleList = new ArrayList<>();
 
+
+
     public User() {
-        Role role = new Role("user");
+        Role role = new Role(1L ,"User");
         roleList.add(role);
     }
 
@@ -50,6 +56,8 @@ public class User {
         this.lastName = lastName;
         this.email = email;
         this.password = password;
+        Role role = new Role(1L ,"User");
+        roleList.add(role);
 
     }
 
@@ -119,9 +127,15 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "firstName='" + firstName + '\'' +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", myFriendList=" + myFriendList +
+                ", buddyBalance=" + buddyBalance +
+                ", bankAccount=" + bankAccount +
+                ", roleList=" + roleList +
                 '}';
     }
 }

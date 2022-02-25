@@ -19,5 +19,9 @@ public class LoginController {
         return new ModelAndView("login");
     }
 
+    @GetMapping("/logoff")
+    public ModelAndView showLogoffPage() {
+        return new ModelAndView("logoff");
+    }
 
 }

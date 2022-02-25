@@ -1,6 +1,8 @@
 package fr.vertours.buddtwo.configuration;
 
+import fr.vertours.buddtwo.model.Role;
 import fr.vertours.buddtwo.model.User;
+import fr.vertours.buddtwo.service.RoleServiceImpl;
 import fr.vertours.buddtwo.service.UserServiceImpl;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -11,16 +13,18 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class DataBaseConfig {
 
     private UserServiceImpl userServiceImpl;
-    private BCryptPasswordEncoder passwordEncoder;
+    private RoleServiceImpl roleService;
 
-    public DataBaseConfig(UserServiceImpl userServiceImpl, BCryptPasswordEncoder passwordEncoder) {
+    public DataBaseConfig(UserServiceImpl userServiceImpl, RoleServiceImpl roleService) {
         this.userServiceImpl = userServiceImpl;
-        this.passwordEncoder = passwordEncoder;
+        this.roleService = roleService;
     }
 
     @Bean
     public CommandLineRunner demo() {
         return args -> {
+            roleService.save(new Role("User"));
+
             User arthur = new User("Arthur", "Pons", "ap@mail.com", "nope");
             userServiceImpl.saveUserByUser(arthur);
             User angelina = new User("Angelina", "Dupond", "ad@mail.com",  "biz");
@@ -33,13 +37,13 @@ public class DataBaseConfig {
             userServiceImpl.saveUserByUser(melanie);
 
 //            userServiceImpl.addFriendInFriendList(arthur, angelina);
-//            userServiceImpl.addFriendInFriendList(arthur, bob);
 //            userServiceImpl.addFriendInFriendList(arthur, benoit);
 //            userServiceImpl.addFriendInFriendList(arthur, melanie);
 //            userServiceImpl.addFriendInFriendList(melanie, angelina);
 //
 //            userServiceImpl.testdestrucs(arthur);
 //            userServiceImpl.testdestrucs(angelina);
+//            userServiceImpl.testdestrucs(melanie);
 
         };
     }

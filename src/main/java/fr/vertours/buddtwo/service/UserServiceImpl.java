@@ -1,10 +1,7 @@
 package fr.vertours.buddtwo.service;
 
 import fr.vertours.buddtwo.configuration.MyUserDetails;
-import fr.vertours.buddtwo.dto.ChangePasswordDTO;
-import fr.vertours.buddtwo.dto.HomeDTO;
-import fr.vertours.buddtwo.dto.ProfileDTO;
-import fr.vertours.buddtwo.dto.RegistrationDTO;
+import fr.vertours.buddtwo.dto.*;
 import fr.vertours.buddtwo.exception.EmailAlreadyPresentException;
 import fr.vertours.buddtwo.exception.PasswordDoesNotMatchException;
 import fr.vertours.buddtwo.model.User;
@@ -12,6 +9,7 @@ import fr.vertours.buddtwo.repository.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Service
@@ -35,22 +33,35 @@ public class UserServiceImpl implements RegistrationService, HomeUserService, Pr
                 passwordEncoder.encode(user.getPassword()));
         userRepository.save(newUser);
     }
-
+    @Transactional
     public void addFriendInFriendList(User user, User friend) {
         User userDB = userRepository.findByEmail(user.getEmail());
         User friendDB = userRepository.findByEmail(friend.getEmail());
         friendDB.getMyFriendList().add(userDB);
+        userDB.getMyFriendList().add(friendDB);
         userRepository.save(userDB);
 
     }
 
-    public void testdestrucs(User user){
-        User userDB = userRepository.findByEmail(user.getEmail());
-        //System.out.println(userDB.getMyFriendList().size());
-        for(User u : userDB.getMyFriendList()) {
-            System.out.println(userRepository.findByEmail(u.getEmail()));
-        }
+    @Transactional
+    public void addFriendByEmail(String userEmail, String friendEmail) {
+        User user = userRepository.findByEmail(userEmail);
+        User friend = userRepository.findByEmail(friendEmail);
+        user.getMyFriendList().add(friend);
+        friend.getMyFriendList().add(user);
+        userRepository.save(user);
+
     }
+    @Transactional
+    public void delFriendByEmail(String userEmail, String friendEmail) {
+        User user = userRepository.findByEmail(userEmail);
+        User friend = userRepository.findByEmail(friendEmail);
+        user.getMyFriendList().remove(friend);
+        friend.getMyFriendList().remove(user);
+        userRepository.save(user);
+
+    }
+
     public void saveUserByRegistrationDTO(RegistrationDTO regDTO) {
         isEmailAlreadyExistInDataBase(regDTO.getEmail());
         User user = new User(regDTO.getFirstName(),
@@ -101,5 +112,21 @@ public class UserServiceImpl implements RegistrationService, HomeUserService, Pr
         if(!dto.getOldPassword().equals(myUserDetails.getPassword())) {
             throw new PasswordDoesNotMatchException();
         }
+    }
+
+    public ContactDTO findContactDTO(MyUserDetails myUD) {
+
+        myUD.setUser(userRepository.findByEmail(myUD.getUsername()));
+        ContactDTO contactDTO = new ContactDTO();
+
+
+        for(User user :myUD.getUser().getMyFriendList()) {
+            FriendDTO friendDTO = new FriendDTO();
+            friendDTO.setFirstName(user.getFirstName());
+            friendDTO.setLastName(user.getLastName());
+            friendDTO.setEmail(user.getEmail());
+            contactDTO.getFriendDTOS().add(friendDTO);
+        }
+        return contactDTO;
     }
 }

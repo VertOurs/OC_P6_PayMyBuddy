@@ -26,6 +26,13 @@ h1 {
     background-color: #e4e8ed ;
 
 }
+#logoffTitle {
+    background-color: #e4e8ed ;
+    text-align: center;
+}
+#bouton{
+    width: 100%;
+}
 .greyNav
 {
     color: darkgray;

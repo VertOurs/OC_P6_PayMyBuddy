@@ -12,33 +12,33 @@
     <title>Home - Pay My Buddy</title>
 </head>
 <body>
-    <!-- NAVIGATION-BAR -->
-    <section>
-        <!-- First Block -->
-        <nav id="navMenu" class="navbar navbar-expand-lg navbar-light bg-white p-0 m-0">
-            <div>
-                <img class="m-0 width-0" src="images/logo.jpeg" alt="" width="145">
-            </div>
-            <div class="flex-row-reverse">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item text-end">
-                        <a lass="nav-link" aria-current="page" href="#" th:href="@{home}">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="#" th:href="@{transfer}">Transfer</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="#" th:href="@{profile}" >Profile</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active text-primary " aria-current="page" href="#">Contact</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="#" th:href="@{logoff}">Log off</a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
+<!-- NAVIGATION-BAR -->
+<section>
+    <!-- First Block -->
+    <nav id="navMenu" class="navbar navbar-expand-lg navbar-light bg-white p-0 m-0">
+        <div>
+            <img class="m-0 width-0" src="images/logo.jpeg" alt="" width="145">
+        </div>
+        <div class="flex-row-reverse">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item text-end">
+                    <a class="nav-link " aria-current="page" href="#"th:href="@{home}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="#" th:href="@{transfer}">Transfer</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="#" th:href="@{profile}" >Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active text-primary " aria-current="page" href="#" >Contact</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="#" th:href="@{logoff}">Log off</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
         <!-- Home / Contact -->
         <div id="navBar" class="navbar-expand-lg p-1">
             <p> Home / <span class="greyNav">Contact</span></p>
@@ -51,23 +51,23 @@
         <div id="divTitre mb-2 mt-2">
             <h1>My Connections</h1>
         </div>
-        <table>
+        <table >
             <thead >
-            <tr>
-                <th class="threeCol">FirstName</th>
-                <th class="threeCol">LastName</th>
-                <th class="threeCol">Email</th>
+            <tr  >
+                <th  class="threeCol">FirstName</th>
+                <th  class="threeCol">LastName</th>
+                <th  class="threeCol">Email</th>
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td th:text="${dto.firstName}"> Martin</td>
-                <td th:text="${dto.lastName}">Dupond</td>
-                <td th:text="${dto.email}">martin-dupond@gmail.com</td>
+            <tr th:each="friend : ${dto.friendDTOS}">
+                <td th:text="${friend.firstName}"> Martin</td>
+                <td th:text="${friend.lastName}">Dupond</td>
+                <td th:text="${friend.email}">martin-dupond@gmail.com</td>
             </tr>
             </tbody>
         </table>
-        <div>
+        <div id="bouton" class=" btn-group btn-lg ">
             <a class="btn btn-primary btn-block mx-5" type="button" th:href="@{addFriend}" >Save a new friend</a>
             <a class="btn btn-primary btn-block mx-5" type="button" th:href="@{delFriend}" >Delete a friend</a>
         </div>

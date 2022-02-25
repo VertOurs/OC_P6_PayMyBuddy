@@ -37,18 +37,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http
                 .authorizeRequests()
-                .antMatchers(resources).permitAll()
-                .anyRequest().authenticated()
-                .and()
+                    .antMatchers(resources).permitAll()
+                    .anyRequest().authenticated()
+                    .and()
                 .formLogin()
-                .loginPage("/login")
-                .usernameParameter("email")
-                .passwordParameter("password")
-                .defaultSuccessUrl("/home", true)
-                .permitAll()
-                .and()
+                    .loginPage("/login")
+                    .usernameParameter("email")
+                    .passwordParameter("password")
+                    .defaultSuccessUrl("/home", true)
+                    .permitAll()
+                    .and()
                 .logout()
-                .permitAll();
+                    .logoutSuccessUrl("/").permitAll();
 
     }
 
