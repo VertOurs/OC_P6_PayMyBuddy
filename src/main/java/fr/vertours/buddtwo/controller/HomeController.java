@@ -2,8 +2,10 @@ package fr.vertours.buddtwo.controller;
 
 import fr.vertours.buddtwo.configuration.MyUserDetails;
 import fr.vertours.buddtwo.dto.AddBankDTO;
+import fr.vertours.buddtwo.dto.BankingTransferDTO;
 import fr.vertours.buddtwo.dto.HomeDTO;
 import fr.vertours.buddtwo.service.HomeBankService;
+import fr.vertours.buddtwo.service.HomeTransferService;
 import fr.vertours.buddtwo.service.HomeUserService;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -22,10 +24,12 @@ public class HomeController {
 
     HomeUserService userService;
     HomeBankService bankService;
+    HomeTransferService transferService;
 
-    public HomeController(HomeUserService userService, HomeBankService bankService) {
+    public HomeController(HomeUserService userService, HomeBankService bankService, HomeTransferService transferService) {
         this.userService = userService;
         this.bankService = bankService;
+        this.transferService = transferService;
     }
 
     @GetMapping("/home")
@@ -50,6 +54,38 @@ public class HomeController {
         }
             bankService.saveBankAccount(addBankDTO, myUD);
 
+        return new ModelAndView(new RedirectView("/home"));
+    }
+
+    @GetMapping("/creditApplication")
+    public ModelAndView showCreditApplicationForm() {
+        ModelAndView mv = new ModelAndView("creditApplication");
+        mv.addObject("dto", new BankingTransferDTO());
+        return mv;
+    }
+
+    @PostMapping("/creditApplication")
+    public ModelAndView submitCreditApplicationForm(@Valid @ModelAttribute("dto") BankingTransferDTO dto, BindingResult bindingResult, @AuthenticationPrincipal MyUserDetails myUD) {
+        if(bindingResult.hasErrors()){
+            return new ModelAndView("creditApplication");
+        }
+        transferService.creditApplicationAccount(dto, myUD);
+        return new ModelAndView(new RedirectView("/home"));
+    }
+
+    @GetMapping("/debitApplication")
+    public ModelAndView showDebitApplicationForm() {
+        ModelAndView mv = new ModelAndView("debitApplication");
+        mv.addObject("dto", new BankingTransferDTO());
+        return mv;
+    }
+
+    @PostMapping("/debitApplication")
+    public ModelAndView submitDebitApplicationForm(@Valid @ModelAttribute("dto") BankingTransferDTO dto, BindingResult bindingResult, @AuthenticationPrincipal MyUserDetails myUD) {
+        if(bindingResult.hasErrors()){
+            return new ModelAndView("debitApplication");
+        }
+        transferService.debitApplicationAccount(dto, myUD);
         return new ModelAndView(new RedirectView("/home"));
     }
 }

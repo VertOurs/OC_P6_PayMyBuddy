@@ -12,23 +12,33 @@ public class Transfer {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @Column
+
     private LocalDateTime dateOfTransaction;
 
-    @Column
+
     private BigDecimal amount;
 
-    @Column
+    private BigDecimal amountFee;
+
     private String description;
 
-    @Column
-    private String sender;
+    @ManyToOne
+    private User sender;
 
-    @Column
-    private String receiver;
+    @ManyToOne
+    private User receiver;
 
 
     public Transfer() {
+    }
+
+    public Transfer(LocalDateTime dateOfTransaction, BigDecimal amount, BigDecimal amountFee, String description, User sender, User receiver) {
+        this.dateOfTransaction = dateOfTransaction;
+        this.amount = amount;
+        this.amountFee = amountFee;
+        this.description = description;
+        this.sender = sender;
+        this.receiver = receiver;
     }
 
     public long getId() {
@@ -55,6 +65,14 @@ public class Transfer {
         this.amount = amount;
     }
 
+    public BigDecimal getAmountFee() {
+        return amountFee;
+    }
+
+    public void setAmountFee(BigDecimal amountFee) {
+        this.amountFee = amountFee;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -63,19 +81,19 @@ public class Transfer {
         this.description = description;
     }
 
-    public String getSender() {
+    public User getSender() {
         return sender;
     }
 
-    public void setSender(String sender) {
+    public void setSender(User sender) {
         this.sender = sender;
     }
 
-    public String getReceiver() {
+    public User getReceiver() {
         return receiver;
     }
 
-    public void setReceiver(String receiver) {
+    public void setReceiver(User receiver) {
         this.receiver = receiver;
     }
 }

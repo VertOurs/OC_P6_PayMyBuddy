@@ -23,6 +23,11 @@ public class UserServiceImpl implements RegistrationService, HomeUserService, Pr
         this.passwordEncoder = passwordEncoder;
     }
 
+
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
     /**
      * Use only by DataBaseConfig
      */
@@ -32,6 +37,10 @@ public class UserServiceImpl implements RegistrationService, HomeUserService, Pr
                 user.getEmail(),
                 passwordEncoder.encode(user.getPassword()));
         userRepository.save(newUser);
+    }
+
+    public void updateUser(User user) {
+        userRepository.save(user);
     }
     @Transactional
     public void addFriendInFriendList(User user, User friend) {

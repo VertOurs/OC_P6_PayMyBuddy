@@ -72,6 +72,10 @@
                 <a class="btn btn-primary btn-block mx-5" type="button" th:href="@{addBank}" th:if="${dto.hasBankAccount}" >  Update Bank Account</a>
             </div>
         </div>
+        <div id="bouton" class=" btn-group btn-lg my-5">
+            <a class="btn btn-primary btn-block mx-5" type="button" th:href="@{creditApplication}" th:if="${dto.hasBankAccount}" >CREDIT MY APPLICATION</a>
+            <a class="btn btn-outline-primary btn-block mx-5" type="button" th:href="@{debitApplication}" th:if="${dto.hasBankAccount}" >DEBIT MY APPLICATION</a>
+        </div>
     </main>
 </body>
 </html>
