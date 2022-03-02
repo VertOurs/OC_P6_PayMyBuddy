@@ -14,22 +14,21 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    @Column(name = "user_id")
+    private Long id;
 
-    @Column
+    @Column(name = "firstname")
     private String firstName;
 
-    @Column
+    @Column(name = "lastname")
     private String lastName;
 
-    @Column
     private String email;
 
-    @Column
     private String password;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "user_friend",
+    @JoinTable(name = "user__friend",
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "friend_id")})
     private List<User> myFriendList = new ArrayList<>();
@@ -41,14 +40,14 @@ public class User {
     private BankAccount bankAccount;
 
     @ManyToMany()
+    @JoinTable(name = "user__roles")
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Role> roleList = new ArrayList<>();
 
 
 
     public User() {
-        Role role = new Role(1L ,"User");
-        roleList.add(role);
+        roleList.add(new Role("USER"));
     }
 
     public User(String firstName, String lastName, String email, String password) {
@@ -56,9 +55,7 @@ public class User {
         this.lastName = lastName;
         this.email = email;
         this.password = password;
-        Role role = new Role(1L ,"User");
-        roleList.add(role);
-
+        roleList.add(new Role("USER"));
     }
 
     public long getId() {

@@ -10,11 +10,10 @@ public class Transfer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
+    @Column(name = "transfer_id")
+    private Long id;
 
     private LocalDateTime dateOfTransaction;
-
 
     private BigDecimal amount;
 

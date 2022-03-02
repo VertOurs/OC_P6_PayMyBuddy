@@ -23,18 +23,18 @@ public class DataBaseConfig {
     @Bean
     public CommandLineRunner demo() {
         return args -> {
-            roleService.save(new Role("User"));
-
-            User arthur = new User("Arthur", "Pons", "ap@mail.com", "nope");
-            userServiceImpl.saveUserByUser(arthur);
-            User angelina = new User("Angelina", "Dupond", "ad@mail.com",  "biz");
-            userServiceImpl.saveUserByUser(angelina);
-            User bob = new User("Bob", "Petronel", "bp@mail.com","aze");
-            userServiceImpl.saveUserByUser(bob);
-            User benoit = new User("Benoit", "bierrard", "bb@mail.com", "zut");
-            userServiceImpl.saveUserByUser(benoit);
-            User melanie = new User("Mélanie", "Jordy", "mj@mail.com", "mel");
-            userServiceImpl.saveUserByUser(melanie);
+//            roleService.save(new Role("User"));
+//
+//            User arthur = new User("Arthur", "Pons", "ap@mail.com", "nope");
+//            userServiceImpl.saveUserByUser(arthur);
+//            User angelina = new User("Angelina", "Dupond", "ad@mail.com",  "biz");
+//            userServiceImpl.saveUserByUser(angelina);
+//            User bob = new User("Bob", "Petronel", "bp@mail.com","aze");
+//            userServiceImpl.saveUserByUser(bob);
+//            User benoit = new User("Benoit", "bierrard", "bb@mail.com", "zut");
+//            userServiceImpl.saveUserByUser(benoit);
+//            User melanie = new User("Mélanie", "Jordy", "mj@mail.com", "mel");
+//            userServiceImpl.saveUserByUser(melanie);
 
 //            userServiceImpl.addFriendInFriendList(arthur, angelina);
 //            userServiceImpl.addFriendInFriendList(arthur, benoit);

@@ -3,24 +3,22 @@ package fr.vertours.buddtwo.model;
 import javax.persistence.*;
 
 @Entity
-@Table
 public class BankAccount {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    @Column(name = "bank_account_id")
+    private Long id;
 
     @OneToOne(optional = false)
     private User user;
 
-    @Column
     private String iban;
 
-    @Column
     private String bic;
 
-    @Column
     private String customizeName;
+
 
     public BankAccount() {
     }
