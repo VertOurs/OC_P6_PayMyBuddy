@@ -16,4 +16,8 @@ public class RoleServiceImpl {
     public Role save(Role role) {
         return roleRepository.save(role);
     }
+
+    public Role findUSERRole() {
+        return roleRepository.findByName("USER");
+    }
 }

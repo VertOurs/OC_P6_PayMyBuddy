@@ -10,7 +10,7 @@ public class Transfer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "transfer_id")
+    @Column(name = "id_transfer")
     private Long id;
 
     private LocalDateTime dateOfTransaction;
@@ -40,11 +40,11 @@ public class Transfer {
         this.receiver = receiver;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

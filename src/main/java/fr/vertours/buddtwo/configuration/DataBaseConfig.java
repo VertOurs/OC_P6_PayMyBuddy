@@ -1,13 +1,11 @@
 package fr.vertours.buddtwo.configuration;
 
-import fr.vertours.buddtwo.model.Role;
-import fr.vertours.buddtwo.model.User;
 import fr.vertours.buddtwo.service.RoleServiceImpl;
 import fr.vertours.buddtwo.service.UserServiceImpl;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 
 @Configuration
 public class DataBaseConfig {

@@ -7,7 +7,7 @@ public class BankAccount {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "bank_account_id")
+    @Column(name = "id_bank_account")
     private Long id;
 
     @OneToOne(optional = false)
@@ -34,10 +34,10 @@ public class BankAccount {
         this.user = user;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

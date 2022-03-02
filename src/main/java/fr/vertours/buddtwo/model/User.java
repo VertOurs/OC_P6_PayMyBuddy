@@ -14,7 +14,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
+    @Column(name = "id_user")
     private Long id;
 
     @Column(name = "firstname")
@@ -33,7 +33,7 @@ public class User {
             inverseJoinColumns = {@JoinColumn(name = "friend_id")})
     private List<User> myFriendList = new ArrayList<>();
 
-    @Column
+    @Column(nullable = false)
     private BigDecimal buddyBalance = BigDecimal.valueOf(0.0);
 
     @OneToOne(mappedBy = "user", optional = true, cascade = CascadeType.REMOVE)
@@ -47,7 +47,7 @@ public class User {
 
 
     public User() {
-        roleList.add(new Role("USER"));
+
     }
 
     public User(String firstName, String lastName, String email, String password) {
@@ -55,13 +55,20 @@ public class User {
         this.lastName = lastName;
         this.email = email;
         this.password = password;
-        roleList.add(new Role("USER"));
     }
 
-    public long getId() {
+    public User(String firstName, String lastName, String email, String password, Role role) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.roleList.add(role);
+    }
+
+    public Long getId() {
         return id;
     }
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -117,8 +124,8 @@ public class User {
     public List<Role> getRoleList() {
         return roleList;
     }
-    public void setRoleList(List<Role> role) {
-        this.roleList = role;
+    public void setRoleList(List<Role> roleList) {
+        this.roleList = roleList;
     }
 
     @Override

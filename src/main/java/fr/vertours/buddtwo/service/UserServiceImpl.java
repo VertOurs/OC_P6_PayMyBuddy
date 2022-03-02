@@ -4,6 +4,7 @@ import fr.vertours.buddtwo.configuration.MyUserDetails;
 import fr.vertours.buddtwo.dto.*;
 import fr.vertours.buddtwo.exception.EmailAlreadyPresentException;
 import fr.vertours.buddtwo.exception.PasswordDoesNotMatchException;
+import fr.vertours.buddtwo.model.Role;
 import fr.vertours.buddtwo.model.User;
 import fr.vertours.buddtwo.repository.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -19,12 +20,13 @@ public class UserServiceImpl implements RegistrationService, HomeUserService, Pr
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final RoleServiceImpl roleService;
 
-    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder, RoleServiceImpl roleService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.roleService = roleService;
     }
-
 
     public User findByEmail(String email) {
         return userRepository.findByEmail(email);
@@ -72,13 +74,14 @@ public class UserServiceImpl implements RegistrationService, HomeUserService, Pr
         userRepository.save(user);
 
     }
-
+    @Transactional
     public void saveUserByRegistrationDTO(RegistrationDTO regDTO) {
         isEmailAlreadyExistInDataBase(regDTO.getEmail());
+        Role role = roleService.findUSERRole();
         User user = new User(regDTO.getFirstName(),
                 regDTO.getLastName(),
                 regDTO.getEmail(),
-                passwordEncoder.encode(regDTO.getPassword()));
+                passwordEncoder.encode(regDTO.getPassword()),role);
         userRepository.save(user);
     }
 
