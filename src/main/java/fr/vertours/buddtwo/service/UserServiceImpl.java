@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.Optional;
 
+import static fr.vertours.buddtwo.dto.FriendDTO.getFriendDTOByUser;
+
 @Service
 public class UserServiceImpl implements RegistrationService, HomeUserService, ProfileUserService {
 
@@ -130,11 +132,7 @@ public class UserServiceImpl implements RegistrationService, HomeUserService, Pr
 
 
         for(User user :myUD.getUser().getMyFriendList()) {
-            FriendDTO friendDTO = new FriendDTO();
-            friendDTO.setFirstName(user.getFirstName());
-            friendDTO.setLastName(user.getLastName());
-            friendDTO.setEmail(user.getEmail());
-            contactDTO.getFriendDTOS().add(friendDTO);
+            contactDTO.getFriendDTOS().add(getFriendDTOByUser(user));
         }
         return contactDTO;
     }
