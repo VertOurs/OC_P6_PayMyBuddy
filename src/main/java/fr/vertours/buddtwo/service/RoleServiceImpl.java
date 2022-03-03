@@ -20,4 +20,8 @@ public class RoleServiceImpl {
     public Role findUSERRole() {
         return roleRepository.findByName("USER");
     }
+
+    public Role findAdminRole() {
+        return roleRepository.findByName("ADMIN");
+    }
 }

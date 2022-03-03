@@ -2,6 +2,7 @@ package fr.vertours.buddtwo.model;
 
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table
@@ -14,15 +15,11 @@ public class Role {
 
     private String name;
 
-
     public Role() {
     }
-
-
     public Role(String name) {
         this.name = name;
     }
-
 
     public Long getId() {
         return id;

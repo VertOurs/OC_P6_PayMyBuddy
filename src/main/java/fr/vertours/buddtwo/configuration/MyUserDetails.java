@@ -25,6 +25,10 @@ public class MyUserDetails implements UserDetails {
         this.user = user;
     }
 
+    public boolean hasRole(String roleName) {
+        return this.user.hasRole(roleName);
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.authorities;

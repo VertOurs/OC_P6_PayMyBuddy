@@ -1,5 +1,7 @@
 package fr.vertours.buddtwo.controller;
 
+import fr.vertours.buddtwo.dto.AdminDTO;
+import fr.vertours.buddtwo.service.AuthTransferService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -7,7 +9,13 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
-public class LoginController {
+public class AuthController {
+
+    private AuthTransferService transferService;
+
+    public AuthController(AuthTransferService transferService) {
+        this.transferService = transferService;
+    }
 
     @GetMapping("/login")
     public ModelAndView showLoginPage() {
@@ -24,4 +32,11 @@ public class LoginController {
         return new ModelAndView("logoff");
     }
 
+    @GetMapping("/admin")
+    public ModelAndView showAdminPage() {
+        AdminDTO dto = transferService.createAdminDTO();
+        ModelAndView mv = new ModelAndView("admin");
+        mv.addObject("dto", dto);
+        return mv;
+    }
 }

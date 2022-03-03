@@ -10,6 +10,7 @@ import fr.vertours.buddtwo.repository.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 import java.util.Optional;
 
@@ -32,6 +33,16 @@ public class UserServiceImpl implements RegistrationService, HomeUserService, Pr
         return userRepository.findByEmail(email);
     }
 
+    @PostConstruct
+    public void initAdminUser() {
+       Role role = roleService.findAdminRole();
+       User admin = new User("admin", "admin",
+                "admin@mail.com",
+                passwordEncoder.encode("admin"), role);
+       if (userRepository.findByEmail(admin.getEmail()) == null) {
+           userRepository.save(admin);
+       }
+    }
     /**
      * Use only by DataBaseConfig
      */

@@ -1,10 +1,7 @@
 package fr.vertours.buddtwo.service;
 
 import fr.vertours.buddtwo.configuration.MyUserDetails;
-import fr.vertours.buddtwo.dto.BankingTransferDTO;
-import fr.vertours.buddtwo.dto.FriendDTO;
-import fr.vertours.buddtwo.dto.TransactionDTO;
-import fr.vertours.buddtwo.dto.TransferDTO;
+import fr.vertours.buddtwo.dto.*;
 import fr.vertours.buddtwo.model.Transfer;
 import fr.vertours.buddtwo.model.User;
 import fr.vertours.buddtwo.repository.TransferRepository;
@@ -21,7 +18,7 @@ import static fr.vertours.buddtwo.constants.ApplicationConstants.feeAmount;
 import static fr.vertours.buddtwo.dto.FriendDTO.getFriendDTOByUser;
 
 @Service
-public class TransferServiceImpl implements HomeTransferService, TransferService {
+public class TransferServiceImpl implements HomeTransferService, TransferService, AuthTransferService {
 
     private TransferRepository repository;
     private UserServiceImpl userService;
@@ -140,5 +137,17 @@ public class TransferServiceImpl implements HomeTransferService, TransferService
             list.add(getFriendDTOByUser(u));
         }
         return list;
+    }
+
+    @Override
+    public AdminDTO createAdminDTO() {
+        List<Transfer> transfers = repository.findAll();
+        BigDecimal totalfee = BigDecimal.ZERO;
+        AdminDTO dto = new AdminDTO();
+        for(Transfer t : transfers) {
+            totalfee = totalfee.add(t.getAmountFee());
+        }
+        dto.setBalance(totalfee.toString());
+        return dto;
     }
 }
