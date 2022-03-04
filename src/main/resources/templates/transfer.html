@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymeleaf.org">
+<html lang="en" >
 <head>
     <meta charset="UTF-8">
     <link 
@@ -91,13 +91,23 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="transaction : ${dto.transactionDTOS}">
+            <tr th:each="transaction : ${dto.transactionDTOS.content}">
                 <td th:text="${transaction.firstName}"></td>
                 <td th:text="${transaction.description}"></td>
                 <td th:text="${transaction.amount}"></td>
             </tr>
             </tbody>
         </table>
+        <nav aria-label="Page navigation example">
+            <ul th:if="${dto.transactionDTOS.totalPages > 0}" class="pagination justify-content-center" >
+                <li class="page-item" th:class="${pageNumber==dto.transactionDTOS.number + 1} ? active"
+                    th:each="pageNumber : ${pageNumbers}">
+                    <a class="page-link" href="#" th:href="@{/transfer(page=${pageNumber})}" th:text="${pageNumber}"
+                       ></a></li>
+
+
+            </ul>
+        </nav>
     </main>
 </body>
 </html>

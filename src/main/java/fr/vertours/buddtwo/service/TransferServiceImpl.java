@@ -5,12 +5,17 @@ import fr.vertours.buddtwo.dto.*;
 import fr.vertours.buddtwo.model.Transfer;
 import fr.vertours.buddtwo.model.User;
 import fr.vertours.buddtwo.repository.TransferRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static fr.vertours.buddtwo.constants.ApplicationConstants.BANKINGTRANSFER;
@@ -61,15 +66,31 @@ public class TransferServiceImpl implements HomeTransferService, TransferService
 
     @Override
     @Transactional
-    public TransferDTO findTransferDTO(MyUserDetails myUD) {
+    public TransferDTO findTransferDTO(MyUserDetails myUD, Pageable pageable) {
         TransferDTO transferDTO = new TransferDTO();
         User user = userService.findByEmail(myUD.getUsername());
         transferDTO.setConnections(
-                friendListByFriendList(user.getMyFriendList()));
-        transferDTO.setTransactionDTOS(
-                getTransactionDTOByUser(user));
+                friendListDTOByFriendList(user.getMyFriendList()));
+        List<TransactionDTO> transactions = getTransactionDTOByUser(user);
+        transferDTO.setTransactionDTOS(getPageableTransactionDTO(transactions, pageable));
         return transferDTO;
     }
+
+    private Page<TransactionDTO> getPageableTransactionDTO(List<TransactionDTO> transactions, Pageable pageable) {
+        int pageSize = pageable.getPageSize();
+        int currentPage = pageable.getPageNumber();
+        int startItem = currentPage * pageSize;
+
+        List<TransactionDTO> list1;
+        if (transactions.size() < startItem) {
+            list1 = Collections.emptyList();
+        } else {
+            int toIndex = Math.min(startItem + pageSize, transactions.size());
+            list1 = transactions.subList(startItem, toIndex);
+        }
+        return new PageImpl<>(list1, PageRequest.of(currentPage, pageSize), transactions.size());
+    }
+
 
     @Override
     public void saveTransfer(TransferDTO dto, MyUserDetails myUD) {
@@ -130,8 +151,7 @@ public class TransferServiceImpl implements HomeTransferService, TransferService
         }
         return dtos;
     }
-
-    private List<FriendDTO> friendListByFriendList(List<User> friendList) {
+    private List<FriendDTO> friendListDTOByFriendList(List<User> friendList) {
         List<FriendDTO> list = new ArrayList<>();
         for(User u : friendList) {
             list.add(getFriendDTOByUser(u));
