@@ -92,6 +92,15 @@ public class UtilUnitTestMethods {
         dto.setConfirmation("test");
         return dto;
     }
+
+    public static ChangePasswordDTO returnChangePasswordDTO() {
+        ChangePasswordDTO dto = new ChangePasswordDTO();
+        dto.setNewPassword("new");
+        dto.setNewPasswordConfirmation("new");
+        dto.setOldPassword("jeanTest");
+        return dto;
+    }
+
     public static MyUserDetails getMyUserDetailsOfGeorge() {
         User george = returnGeorgeUser();
         george.setRoleList(new ArrayList<>());

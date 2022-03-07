@@ -18,7 +18,7 @@ import static fr.vertours.buddtwo.dto.FriendDTO.getFriendDTOByUser;
 
 @Service
 public class UserServiceImpl implements RegistrationService,
-        HomeUserService, ProfileUserService {
+        HomeUserService, ProfileUserService, ContactUserService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;

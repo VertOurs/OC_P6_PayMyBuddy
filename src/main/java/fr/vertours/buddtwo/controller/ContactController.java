@@ -3,7 +3,7 @@ package fr.vertours.buddtwo.controller;
 import fr.vertours.buddtwo.security.MyUserDetails;
 import fr.vertours.buddtwo.dto.AddFriendDTO;
 import fr.vertours.buddtwo.dto.ContactDTO;
-import fr.vertours.buddtwo.service.UserServiceImpl;
+import fr.vertours.buddtwo.service.ContactUserService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -18,9 +18,9 @@ import javax.validation.Valid;
 @Controller
 public class ContactController {
 
-    private final UserServiceImpl userService;
+    private final ContactUserService userService;
 
-    public ContactController(final UserServiceImpl userService) {
+    public ContactController(final ContactUserService userService) {
         this.userService = userService;
     }
 
