@@ -14,11 +14,4 @@ public class AddFriendDTO {
     public void setFriendEmail(String friendEmail) {
         this.friendEmail = friendEmail;
     }
-
-    @Override
-    public String toString() {
-        return "AddFriendDTO{" +
-                "friendEmail='" + friendEmail + '\'' +
-                '}';
-    }
 }

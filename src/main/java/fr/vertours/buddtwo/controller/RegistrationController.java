@@ -35,14 +35,16 @@ public class RegistrationController {
     }
 
     @PostMapping("/registration")
-    public ModelAndView submitRegistrationForm(@Valid @ModelAttribute("regDTO") RegistrationDTO regDTO, BindingResult bindingResult) {
-        if(bindingResult.hasErrors()){
+    public ModelAndView submitRegistrationForm(
+            @Valid @ModelAttribute("regDTO") RegistrationDTO regDTO,
+            BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
             return new ModelAndView("registration");
         }
         try {
             service.saveUserByRegistrationDTO(regDTO);
         } catch (EmailAlreadyPresentException e) {
-            bindingResult.rejectValue("email","",e.getMessage());
+            bindingResult.rejectValue("email", "", e.getMessage());
             return new ModelAndView("registration");
         }
 

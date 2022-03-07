@@ -7,13 +7,13 @@ import javax.validation.constraints.NotBlank;
 @PassConf
 public class ChangePasswordDTO {
 
-    @NotBlank(message= "please enter password")
+    @NotBlank(message = "please enter password")
     private String oldPassword;
 
-    @NotBlank(message= "please enter password")
+    @NotBlank(message = "please enter password")
     private String newPassword;
 
-    @NotBlank(message= "please enter password confirmation")
+    @NotBlank(message = "please enter password confirmation")
     private String newPasswordConfirmation;
 
 

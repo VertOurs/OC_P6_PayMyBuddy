@@ -18,7 +18,8 @@ public class FriendDTO {
     }
 
     public static FriendDTO getFriendDTOByUser(User user) {
-        return new FriendDTO(user.getFirstName(), user.getLastName(), user.getEmail());
+        return new FriendDTO(user.getFirstName(),
+                user.getLastName(), user.getEmail());
     }
 
     public String getFirstName() {

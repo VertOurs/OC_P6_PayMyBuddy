@@ -23,7 +23,8 @@ public class BankAccount {
     public BankAccount() {
     }
 
-    public BankAccount(User user, String iban, String bic, String customizeName) {
+    public BankAccount(User user, String iban, String bic,
+                       String customizeName) {
         this.user = user;
         this.iban = iban;
         this.bic = bic;

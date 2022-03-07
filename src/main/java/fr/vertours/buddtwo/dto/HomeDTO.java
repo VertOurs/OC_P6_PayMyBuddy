@@ -8,6 +8,16 @@ public class HomeDTO {
     private String bankName;
     private boolean hasBankAccount;
 
+    public HomeDTO() {
+    }
+
+    public HomeDTO(String firstName, String lastName, String balance, String bankName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.balance = balance;
+        this.bankName = bankName;
+    }
+
     public String getFirstName() {
         return firstName;
     }

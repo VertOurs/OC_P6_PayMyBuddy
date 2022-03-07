@@ -1,11 +1,8 @@
 package fr.vertours.buddtwo.controller;
 
-import fr.vertours.buddtwo.configuration.MyUserDetails;
-import fr.vertours.buddtwo.dto.AddBankDTO;
+import fr.vertours.buddtwo.security.MyUserDetails;
 import fr.vertours.buddtwo.dto.ChangePasswordDTO;
-import fr.vertours.buddtwo.dto.HomeDTO;
 import fr.vertours.buddtwo.dto.ProfileDTO;
-import fr.vertours.buddtwo.exception.EmailAlreadyPresentException;
 import fr.vertours.buddtwo.exception.PasswordDoesNotMatchException;
 import fr.vertours.buddtwo.service.ProfileUserService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -29,7 +26,8 @@ public class ProfileController {
     }
 
     @GetMapping("/profile")
-    public ModelAndView showProfilePage(@AuthenticationPrincipal MyUserDetails myUD) {
+    public ModelAndView showProfilePage(
+            @AuthenticationPrincipal MyUserDetails myUD) {
         ProfileDTO profileDTO =  userService.findProfileDTO(myUD);
         ModelAndView mv = new ModelAndView("profile");
         mv.addObject("dto", profileDTO);
@@ -44,14 +42,17 @@ public class ProfileController {
     }
 
     @PostMapping("/changePassword")
-    public ModelAndView submitAddBankForm(@Valid @ModelAttribute("dto") ChangePasswordDTO changePasswordDTO,BindingResult bindingResult, @AuthenticationPrincipal MyUserDetails myUD) {
-        if(bindingResult.hasErrors()){
+    public ModelAndView submitAddBankForm(
+            @Valid @ModelAttribute("dto") ChangePasswordDTO changePasswordDTO,
+            BindingResult bindingResult,
+            @AuthenticationPrincipal MyUserDetails myUD) {
+        if (bindingResult.hasErrors()) {
             return new ModelAndView("changePassword");
         }
         try {
         userService.updatePassword(changePasswordDTO, myUD);
         } catch (PasswordDoesNotMatchException e) {
-            bindingResult.rejectValue("","",e.getMessage());
+            bindingResult.rejectValue("", "", e.getMessage());
             return new ModelAndView("changePassword");
         }
         return new ModelAndView(new RedirectView("/logout"));

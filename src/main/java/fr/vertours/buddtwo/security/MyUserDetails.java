@@ -1,4 +1,4 @@
-package fr.vertours.buddtwo.configuration;
+package fr.vertours.buddtwo.security;
 
 import fr.vertours.buddtwo.model.Role;
 import fr.vertours.buddtwo.model.User;
@@ -7,7 +7,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.stream.Collectors;
 
 public class MyUserDetails implements UserDetails {
@@ -18,7 +17,8 @@ public class MyUserDetails implements UserDetails {
     private User user;
 
 
-    public MyUserDetails(Collection<Role> roleCollection, String password, String mail, User user) {
+    public MyUserDetails(Collection<Role> roleCollection, String password,
+                         String mail, User user) {
         grantedAuthorityFromRole(roleCollection);
         this.password = password;
         this.mail = mail;

@@ -9,11 +9,11 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = PassConfValidator.class)
-public @interface PassConf {
+@Constraint(validatedBy = EnoughMoneyValidator.class)
+public @interface EnoughMoney {
 
-    String message() default "the password and the confirmation password must"
-            + " be strictly identical.";
+    String message() default "you do not have enough money for this operation,"
+            + " please credit your account.";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }

@@ -1,6 +1,6 @@
 package fr.vertours.buddtwo.controller;
 
-import fr.vertours.buddtwo.configuration.MyUserDetails;
+import fr.vertours.buddtwo.security.MyUserDetails;
 import fr.vertours.buddtwo.dto.TransferDTO;
 import fr.vertours.buddtwo.service.TransferService;
 import org.springframework.data.domain.PageRequest;
@@ -23,19 +23,22 @@ import java.util.stream.IntStream;
 @Controller
 public class TransferController {
 
-    private TransferService transferService;
+    private final TransferService transferService;
 
     public TransferController(TransferService transferService) {
         this.transferService = transferService;
     }
 
     @GetMapping("/transfer")
-    public ModelAndView showTransferPage(@AuthenticationPrincipal MyUserDetails myUD, @RequestParam("page") Optional<Integer> page) {
+    public ModelAndView showTransferPage(
+            @AuthenticationPrincipal MyUserDetails myUD,
+            @RequestParam("page") Optional<Integer> page) {
         ModelAndView mv = new ModelAndView("transfer");
         int currentPage = page.orElse(1);
         int pageSize = 3;
 
-        TransferDTO transferDTO =  transferService.findTransferDTO(myUD, PageRequest.of(currentPage-1, pageSize));
+        TransferDTO transferDTO =  transferService.findTransferDTO(
+                myUD, PageRequest.of(currentPage - 1, pageSize));
         mv.addObject("dto", transferDTO);
 
         int totalPages = transferDTO.getTransactionDTOS().getTotalPages();
@@ -49,8 +52,11 @@ public class TransferController {
     }
 
     @PostMapping("/transfer")
-    public ModelAndView submitTransferForm(@Valid @ModelAttribute("dto") TransferDTO dto, BindingResult bindingResult, @AuthenticationPrincipal MyUserDetails myUD) {
-        if(bindingResult.hasErrors()){
+    public ModelAndView submitTransferForm(
+            @Valid @ModelAttribute("dto") TransferDTO dto,
+            BindingResult bindingResult,
+            @AuthenticationPrincipal MyUserDetails myUD) {
+        if (bindingResult.hasErrors()) {
             return new ModelAndView("transfer");
         }
         transferService.makeTransfer(dto, myUD);

@@ -1,6 +1,6 @@
 package fr.vertours.buddtwo.controller;
 
-import fr.vertours.buddtwo.configuration.MyUserDetails;
+import fr.vertours.buddtwo.security.MyUserDetails;
 import fr.vertours.buddtwo.dto.AddBankDTO;
 import fr.vertours.buddtwo.dto.BankingTransferDTO;
 import fr.vertours.buddtwo.dto.HomeDTO;
@@ -22,18 +22,21 @@ import javax.validation.Valid;
 @Controller
 public class HomeController {
 
-    HomeUserService userService;
-    HomeBankService bankService;
-    HomeTransferService transferService;
+    final HomeUserService userService;
+    final HomeBankService bankService;
+    final HomeTransferService transferService;
 
-    public HomeController(HomeUserService userService, HomeBankService bankService, HomeTransferService transferService) {
+    public HomeController(HomeUserService userService,
+                          HomeBankService bankService,
+                          HomeTransferService transferService) {
         this.userService = userService;
         this.bankService = bankService;
         this.transferService = transferService;
     }
 
     @GetMapping("/home")
-    public ModelAndView showHomePage(@AuthenticationPrincipal MyUserDetails myUD) {
+    public ModelAndView showHomePage(
+            @AuthenticationPrincipal MyUserDetails myUD) {
         HomeDTO homeDTO =  userService.findHomeDTOByMyUserDetails(myUD);
         ModelAndView mv = new ModelAndView("home");
         mv.addObject("dto", homeDTO);
@@ -48,8 +51,11 @@ public class HomeController {
     }
 
     @PostMapping("/addBank")
-    public ModelAndView submitAddBankForm(@Valid @ModelAttribute("addBankDTO") AddBankDTO addBankDTO, BindingResult bindingResult, @AuthenticationPrincipal MyUserDetails myUD) {
-        if(bindingResult.hasErrors()){
+    public ModelAndView submitAddBankForm(
+            @Valid @ModelAttribute("addBankDTO") AddBankDTO addBankDTO,
+            BindingResult bindingResult,
+            @AuthenticationPrincipal MyUserDetails myUD) {
+        if (bindingResult.hasErrors()) {
             return new ModelAndView("addBank");
         }
             bankService.saveBankAccount(addBankDTO, myUD);
@@ -65,8 +71,11 @@ public class HomeController {
     }
 
     @PostMapping("/creditApplication")
-    public ModelAndView submitCreditApplicationForm(@Valid @ModelAttribute("dto") BankingTransferDTO dto, BindingResult bindingResult, @AuthenticationPrincipal MyUserDetails myUD) {
-        if(bindingResult.hasErrors()){
+    public ModelAndView submitCreditApplicationForm(
+            @Valid @ModelAttribute("dto") BankingTransferDTO dto,
+            BindingResult bindingResult,
+            @AuthenticationPrincipal MyUserDetails myUD) {
+        if (bindingResult.hasErrors()) {
             return new ModelAndView("creditApplication");
         }
         transferService.creditApplicationAccount(dto, myUD);
@@ -81,8 +90,11 @@ public class HomeController {
     }
 
     @PostMapping("/debitApplication")
-    public ModelAndView submitDebitApplicationForm(@Valid @ModelAttribute("dto") BankingTransferDTO dto, BindingResult bindingResult, @AuthenticationPrincipal MyUserDetails myUD) {
-        if(bindingResult.hasErrors()){
+    public ModelAndView submitDebitApplicationForm(
+            @Valid @ModelAttribute("dto") BankingTransferDTO dto,
+            final BindingResult bindingResult,
+            @AuthenticationPrincipal MyUserDetails myUD) {
+        if (bindingResult.hasErrors()) {
             return new ModelAndView("debitApplication");
         }
         transferService.debitApplicationAccount(dto, myUD);

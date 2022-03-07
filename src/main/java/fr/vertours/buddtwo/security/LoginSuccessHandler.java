@@ -1,6 +1,6 @@
-package fr.vertours.buddtwo.configuration;
+package fr.vertours.buddtwo.security;
 
-import fr.vertours.buddtwo.model.Role;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -22,7 +22,7 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
         MyUserDetails myUD = (MyUserDetails) authentication.getPrincipal();
         String redirectURL = request.getContextPath();
 
-        if(myUD.hasRole("ADMIN")) {
+        if (myUD.hasRole("ADMIN")) {
             redirectURL = "admin";
         } else {
             redirectURL = "home";

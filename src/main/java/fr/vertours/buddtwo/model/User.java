@@ -35,7 +35,7 @@ public class User {
     private List<User> myFriendList = new ArrayList<>();
 
     @Column(nullable = false)
-    private BigDecimal buddyBalance = BigDecimal.valueOf(0.0);
+    private BigDecimal buddyBalance = BigDecimal.valueOf(0.00).setScale(2);
 
     @OneToOne(mappedBy = "user", optional = true, cascade = CascadeType.REMOVE)
     private BankAccount bankAccount;
@@ -143,16 +143,16 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", myFriendList=" + myFriendList +
-                ", buddyBalance=" + buddyBalance +
-                ", bankAccount=" + bankAccount +
-                ", roleList=" + roleList +
-                '}';
+        return "User{"
+                + "id=" + id
+                + ", firstName='" + firstName + '\''
+                + ", lastName='" + lastName + '\''
+                + ", email='" + email + '\''
+                + ", password='" + password + '\''
+                + ", myFriendList=" + myFriendList
+                + ", buddyBalance=" + buddyBalance
+                + ", bankAccount=" + bankAccount
+                + ", roleList=" + roleList
+                + '}';
     }
 }

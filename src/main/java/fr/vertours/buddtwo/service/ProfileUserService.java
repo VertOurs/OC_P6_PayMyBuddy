@@ -1,6 +1,6 @@
 package fr.vertours.buddtwo.service;
 
-import fr.vertours.buddtwo.configuration.MyUserDetails;
+import fr.vertours.buddtwo.security.MyUserDetails;
 import fr.vertours.buddtwo.dto.ChangePasswordDTO;
 import fr.vertours.buddtwo.dto.ProfileDTO;
 

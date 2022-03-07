@@ -31,7 +31,9 @@ public class Transfer {
     public Transfer() {
     }
 
-    public Transfer(LocalDateTime dateOfTransaction, BigDecimal amount, BigDecimal amountFee, String description, User sender, User receiver) {
+    public Transfer(LocalDateTime dateOfTransaction, BigDecimal amount,
+                    BigDecimal amountFee, String description, User sender,
+                    User receiver) {
         this.dateOfTransaction = dateOfTransaction;
         this.amount = amount;
         this.amountFee = amountFee;

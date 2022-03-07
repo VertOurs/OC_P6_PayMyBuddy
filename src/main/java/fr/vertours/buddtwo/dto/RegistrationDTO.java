@@ -3,19 +3,22 @@ package fr.vertours.buddtwo.dto;
 import fr.vertours.buddtwo.validation.PasswordConfirmation;
 
 import javax.validation.constraints.Email;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+
+import static fr.vertours.buddtwo.constants.ApplicationConstants.CHARACTER_LIMIT;
 
 @PasswordConfirmation
 public class RegistrationDTO {
 
     @NotBlank (message = "Please enter your first name.")
-    @Size(max=50, message = "First name should be maximum 50 characters.")
+    @Size(max= CHARACTER_LIMIT,
+            message = "First name should be maximum 50 characters.")
     private String firstName;
 
     @NotBlank (message = "Please enter your last name.")
-    @Size(max=50, message = "Last name should be maximum 50 characters")
+    @Size(max=CHARACTER_LIMIT,
+            message = "Last name should be maximum 50 characters")
     private String lastName;
 
     @NotBlank (message = "Please enter your email.")
@@ -23,10 +26,10 @@ public class RegistrationDTO {
     private String email;
 
 
-    @NotBlank(message= "please enter password")
+    @NotBlank(message = "please enter password")
     private String password;
 
-    @NotBlank(message= "please enter password confirmation")
+    @NotBlank(message = "please enter password confirmation")
     private String confirmation;
 
 

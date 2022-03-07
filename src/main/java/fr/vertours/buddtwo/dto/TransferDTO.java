@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class TransferDTO {
 
     private List<FriendDTO> connections = new ArrayList<>();

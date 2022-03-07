@@ -1,6 +1,6 @@
 package fr.vertours.buddtwo.service;
 
-import fr.vertours.buddtwo.configuration.MyUserDetails;
+import fr.vertours.buddtwo.security.MyUserDetails;
 import fr.vertours.buddtwo.dto.*;
 import fr.vertours.buddtwo.model.Transfer;
 import fr.vertours.buddtwo.model.User;
@@ -23,22 +23,27 @@ import static fr.vertours.buddtwo.constants.ApplicationConstants.feeAmount;
 import static fr.vertours.buddtwo.dto.FriendDTO.getFriendDTOByUser;
 
 @Service
-public class TransferServiceImpl implements HomeTransferService, TransferService, AuthTransferService {
+public class TransferServiceImpl implements HomeTransferService,
+        TransferService, AuthTransferService {
 
-    private TransferRepository repository;
-    private UserServiceImpl userService;
+    private final TransferRepository repository;
+    private final UserServiceImpl userService;
 
-    public TransferServiceImpl(TransferRepository repository, UserServiceImpl userService) {
+    public TransferServiceImpl(TransferRepository repository,
+                               UserServiceImpl userService) {
         this.repository = repository;
         this.userService = userService;
     }
 
     @Override
     @Transactional
-    public void creditApplicationAccount(BankingTransferDTO dto, MyUserDetails myUD) {
+    public void creditApplicationAccount(BankingTransferDTO dto,
+                                         MyUserDetails myUD) {
         User user = userService.findByEmail(myUD.getUsername());
         user.setBuddyBalance(user.getBuddyBalance().add(dto.getAmount()));
-        Transfer transfer = new Transfer(LocalDateTime.now(), dto.getAmount(), feeAmount(dto.getAmount()), BANKINGTRANSFER, myUD.getUser(), myUD.getUser());
+        Transfer transfer = new Transfer(LocalDateTime.now(), dto.getAmount(),
+                feeAmount(dto.getAmount()), BANKINGTRANSFER, myUD.getUser(),
+                myUD.getUser());
         repository.save(transfer);
         userService.updateUser(user);
         myUD.setUser(user);
@@ -46,14 +51,18 @@ public class TransferServiceImpl implements HomeTransferService, TransferService
 
     @Override
     @Transactional
-    public void debitApplicationAccount(BankingTransferDTO dto, MyUserDetails myUD)  {
+    public void debitApplicationAccount(BankingTransferDTO dto,
+                                        MyUserDetails myUD)  {
         User user = userService.findByEmail(myUD.getUsername());
-        BigDecimal amountWithFee = dto.getAmount().add(feeAmount(dto.getAmount()));
+        BigDecimal amountWithFee = dto.getAmount().add(
+                feeAmount(dto.getAmount()));
         user.setBuddyBalance(user.getBuddyBalance().subtract(amountWithFee));
         if(isBalanceNegative(user.getBuddyBalance())) {
             //TODO gestion d'erreur
         }
-        Transfer transfer = new Transfer(LocalDateTime.now(), dto.getAmount().negate(), feeAmount(dto.getAmount()), BANKINGTRANSFER, myUD.getUser(), myUD.getUser());
+        Transfer transfer = new Transfer(LocalDateTime.now(),
+                dto.getAmount().negate(), feeAmount(dto.getAmount()),
+                BANKINGTRANSFER, myUD.getUser(), myUD.getUser());
         repository.save(transfer);
         userService.updateUser(user);
         myUD.setUser(user);
@@ -71,12 +80,15 @@ public class TransferServiceImpl implements HomeTransferService, TransferService
         User user = userService.findByEmail(myUD.getUsername());
         transferDTO.setConnections(
                 friendListDTOByFriendList(user.getMyFriendList()));
+
         List<TransactionDTO> transactions = getTransactionDTOByUser(user);
-        transferDTO.setTransactionDTOS(getPageableTransactionDTO(transactions, pageable));
+        transferDTO.setTransactionDTOS(getPageableTransactionDTO(transactions,
+                pageable));
         return transferDTO;
     }
 
-    private Page<TransactionDTO> getPageableTransactionDTO(List<TransactionDTO> transactions, Pageable pageable) {
+    private Page<TransactionDTO> getPageableTransactionDTO(
+            List<TransactionDTO> transactions, Pageable pageable) {
         int pageSize = pageable.getPageSize();
         int currentPage = pageable.getPageNumber();
         int startItem = currentPage * pageSize;
@@ -88,16 +100,10 @@ public class TransferServiceImpl implements HomeTransferService, TransferService
             int toIndex = Math.min(startItem + pageSize, transactions.size());
             list1 = transactions.subList(startItem, toIndex);
         }
-        return new PageImpl<>(list1, PageRequest.of(currentPage, pageSize), transactions.size());
+        return new PageImpl<>(list1, PageRequest.of(currentPage, pageSize),
+                transactions.size());
     }
 
-
-    @Override
-    public void saveTransfer(TransferDTO dto, MyUserDetails myUD) {
-        for(TransactionDTO dtoT :dto.getTransactionDTOS()) {
-            System.out.println(dtoT.getDescription());
-        }
-    }
 
     @Override
     @Transactional
@@ -122,22 +128,23 @@ public class TransferServiceImpl implements HomeTransferService, TransferService
         userService.updateUser(user);
     }
 
-    private List<TransactionDTO> getTransactionDTOByUser(User user) {
+    public List<TransactionDTO> getTransactionDTOByUser(User user) {
         List<TransactionDTO> dtos = new ArrayList<>();
         List<Transfer> bigList = repository.findAll();
 
-        for(Transfer t : bigList) {
+        for (Transfer t : bigList) {
             TransactionDTO dto = new TransactionDTO();
-            if(t.getReceiver().equals(t.getSender()) && t.getReceiver().equals(user)) {
+            if (t.getReceiver().equals(t.getSender())
+                    && t.getReceiver().equals(user)) {
                 dto.setFirstName(t.getDescription());
-                if(isBalanceNegative(t.getAmount())) {
+                if (isBalanceNegative(t.getAmount())) {
                     dto.setDescription("DEBIT");
                 } else {
                     dto.setDescription("CREDIT");
                 }
                 dto.setAmount(t.getAmount());
                 dtos.add(dto);
-            } else if(t.getReceiver().equals(user)) {
+            } else if (t.getReceiver().equals(user)) {
                 dto.setFirstName(t.getSender().getFirstName());
                 dto.setDescription(t.getDescription());
                 dto.setAmount(t.getAmount());
@@ -153,7 +160,7 @@ public class TransferServiceImpl implements HomeTransferService, TransferService
     }
     private List<FriendDTO> friendListDTOByFriendList(List<User> friendList) {
         List<FriendDTO> list = new ArrayList<>();
-        for(User u : friendList) {
+        for (User u : friendList) {
             list.add(getFriendDTOByUser(u));
         }
         return list;
@@ -164,7 +171,7 @@ public class TransferServiceImpl implements HomeTransferService, TransferService
         List<Transfer> transfers = repository.findAll();
         BigDecimal totalfee = BigDecimal.ZERO;
         AdminDTO dto = new AdminDTO();
-        for(Transfer t : transfers) {
+        for (Transfer t : transfers) {
             totalfee = totalfee.add(t.getAmountFee());
         }
         dto.setBalance(totalfee.toString());

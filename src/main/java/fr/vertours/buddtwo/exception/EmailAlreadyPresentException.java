@@ -2,14 +2,14 @@ package fr.vertours.buddtwo.exception;
 
 public class EmailAlreadyPresentException  extends RuntimeException {
 
-    private final String EMAIL;
+    private final String email;
 
-    public EmailAlreadyPresentException(String EMAIL) {
-        this.EMAIL = EMAIL;
+    public EmailAlreadyPresentException(String email) {
+        this.email = email;
     }
 
     @Override
     public String getMessage() {
-        return "This email \"" + EMAIL + "\", was already use in application";
+        return "This email \"" + email + "\", was already use in application";
     }
 }

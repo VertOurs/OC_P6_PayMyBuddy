@@ -1,12 +1,9 @@
 package fr.vertours.buddtwo.controller;
 
-import fr.vertours.buddtwo.configuration.MyUserDetails;
-import fr.vertours.buddtwo.dto.AddBankDTO;
+import fr.vertours.buddtwo.security.MyUserDetails;
 import fr.vertours.buddtwo.dto.AddFriendDTO;
 import fr.vertours.buddtwo.dto.ContactDTO;
-import fr.vertours.buddtwo.dto.ProfileDTO;
 import fr.vertours.buddtwo.service.UserServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -21,11 +18,15 @@ import javax.validation.Valid;
 @Controller
 public class ContactController {
 
-    @Autowired
-    private UserServiceImpl userService;
+    private final UserServiceImpl userService;
+
+    public ContactController(final UserServiceImpl userService) {
+        this.userService = userService;
+    }
 
     @GetMapping("/contact")
-    public ModelAndView showProfilePage(@AuthenticationPrincipal MyUserDetails myUD) {
+    public ModelAndView showProfilePage(
+            @AuthenticationPrincipal final MyUserDetails myUD) {
         ContactDTO contactDTO =  userService.findContactDTO(myUD);
         ModelAndView mv = new ModelAndView("contact");
         mv.addObject("dto", contactDTO);
@@ -41,11 +42,15 @@ public class ContactController {
     }
 
     @PostMapping("/addFriend")
-    public ModelAndView submitAddFriendForm(@Valid @ModelAttribute("dto") AddFriendDTO addFriendDTO, BindingResult bindingResult, @AuthenticationPrincipal MyUserDetails myUD) {
-        if(bindingResult.hasErrors()) {
+    public ModelAndView submitAddFriendForm(
+            @Valid @ModelAttribute("dto") final AddFriendDTO addFriendDTO,
+            final BindingResult bindingResult,
+            final @AuthenticationPrincipal MyUserDetails myUD) {
+        if (bindingResult.hasErrors()) {
             return new ModelAndView("addFriend");
         }
-        userService.addFriendByEmail(myUD.getUsername(), addFriendDTO.getFriendEmail());
+        userService.addFriendByEmail(myUD.getUsername(),
+                addFriendDTO.getFriendEmail());
         return new ModelAndView(new RedirectView("/contact"));
     }
 
@@ -58,11 +63,15 @@ public class ContactController {
     }
 
     @PostMapping("/delFriend")
-    public ModelAndView submitDelFriendForm(@Valid @ModelAttribute("dto") AddFriendDTO addFriendDTO, BindingResult bindingResult, @AuthenticationPrincipal MyUserDetails myUD) {
-        if(bindingResult.hasErrors()) {
+    public ModelAndView submitDelFriendForm(
+            @Valid @ModelAttribute("dto") final AddFriendDTO addFriendDTO,
+            final BindingResult bindingResult,
+            @AuthenticationPrincipal final MyUserDetails myUD) {
+        if (bindingResult.hasErrors()) {
             return new ModelAndView("delFriend");
         }
-        userService.delFriendByEmail(myUD.getUsername(), addFriendDTO.getFriendEmail());
+        userService.delFriendByEmail(
+                myUD.getUsername(), addFriendDTO.getFriendEmail());
         return new ModelAndView(new RedirectView("/contact"));
     }
 }

@@ -12,7 +12,8 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = PasswordConfirmationValidator.class)
 public @interface PasswordConfirmation {
 
-    String message() default "the password and the confirmation password must be strictly identical.";
+    String message() default "the password and the confirmation password must "
+            + "be strictly identical.";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }

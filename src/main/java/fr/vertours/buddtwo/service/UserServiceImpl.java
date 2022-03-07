@@ -1,6 +1,6 @@
 package fr.vertours.buddtwo.service;
 
-import fr.vertours.buddtwo.configuration.MyUserDetails;
+import fr.vertours.buddtwo.security.MyUserDetails;
 import fr.vertours.buddtwo.dto.*;
 import fr.vertours.buddtwo.exception.EmailAlreadyPresentException;
 import fr.vertours.buddtwo.exception.PasswordDoesNotMatchException;
@@ -17,13 +17,16 @@ import java.util.Optional;
 import static fr.vertours.buddtwo.dto.FriendDTO.getFriendDTOByUser;
 
 @Service
-public class UserServiceImpl implements RegistrationService, HomeUserService, ProfileUserService {
+public class UserServiceImpl implements RegistrationService,
+        HomeUserService, ProfileUserService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final RoleServiceImpl roleService;
 
-    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder, RoleServiceImpl roleService) {
+    public UserServiceImpl(UserRepository userRepository,
+                           BCryptPasswordEncoder passwordEncoder,
+                           RoleServiceImpl roleService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.roleService = roleService;
@@ -43,32 +46,14 @@ public class UserServiceImpl implements RegistrationService, HomeUserService, Pr
            userRepository.save(admin);
        }
     }
-    /**
-     * Use only by DataBaseConfig
-     */
-    public void saveUserByUser(User user) {
-        User newUser = new User(user.getFirstName(),
-                user.getLastName(),
-                user.getEmail(),
-                passwordEncoder.encode(user.getPassword()));
-        userRepository.save(newUser);
-    }
 
     public void updateUser(User user) {
         userRepository.save(user);
     }
-    @Transactional
-    public void addFriendInFriendList(User user, User friend) {
-        User userDB = userRepository.findByEmail(user.getEmail());
-        User friendDB = userRepository.findByEmail(friend.getEmail());
-        friendDB.getMyFriendList().add(userDB);
-        userDB.getMyFriendList().add(friendDB);
-        userRepository.save(userDB);
-
-    }
 
     @Transactional
     public void addFriendByEmail(String userEmail, String friendEmail) {
+        //TODO erreurs?
         User user = userRepository.findByEmail(userEmail);
         User friend = userRepository.findByEmail(friendEmail);
         user.getMyFriendList().add(friend);
@@ -78,6 +63,7 @@ public class UserServiceImpl implements RegistrationService, HomeUserService, Pr
     }
     @Transactional
     public void delFriendByEmail(String userEmail, String friendEmail) {
+        //TODO erreurs?
         User user = userRepository.findByEmail(userEmail);
         User friend = userRepository.findByEmail(friendEmail);
         user.getMyFriendList().remove(friend);
@@ -92,12 +78,13 @@ public class UserServiceImpl implements RegistrationService, HomeUserService, Pr
         User user = new User(regDTO.getFirstName(),
                 regDTO.getLastName(),
                 regDTO.getEmail(),
-                passwordEncoder.encode(regDTO.getPassword()),role);
+                passwordEncoder.encode(regDTO.getPassword()), role);
         userRepository.save(user);
     }
 
     private void isEmailAlreadyExistInDataBase(String email)  {
-        Optional<User> isUserExist = Optional.ofNullable(userRepository.findByEmail(email));
+        Optional<User> isUserExist = Optional.ofNullable(
+                userRepository.findByEmail(email));
         if(isUserExist.isPresent()) {
             throw new EmailAlreadyPresentException(email);
         }
@@ -109,7 +96,7 @@ public class UserServiceImpl implements RegistrationService, HomeUserService, Pr
         dto.setFirstName(user.getFirstName());
         dto.setLastName(user.getLastName());
         dto.setBalance(String.valueOf(user.getBuddyBalance()));
-        if(user.getBankAccount()!=null) {
+        if (user.getBankAccount() != null) {
             dto.setBankName(user.getBankAccount().getCustomizeName());
         }
         return dto;
@@ -126,15 +113,17 @@ public class UserServiceImpl implements RegistrationService, HomeUserService, Pr
     }
 
     @Override
-    public void updatePassword(ChangePasswordDTO dto, MyUserDetails myUserDetails) {
+    public void updatePassword(ChangePasswordDTO dto,
+                               MyUserDetails myUserDetails) {
         isPasswordsMatch(dto, myUserDetails);
         User user = myUserDetails.getUser();
         user.setPassword(passwordEncoder.encode(dto.getNewPassword()));
         userRepository.save(user);
     }
 
-    private void isPasswordsMatch(ChangePasswordDTO dto, MyUserDetails myUserDetails) {
-        if(!dto.getOldPassword().equals(myUserDetails.getPassword())) {
+    private void isPasswordsMatch(ChangePasswordDTO dto,
+                                  MyUserDetails myUserDetails) {
+        if (!dto.getOldPassword().equals(myUserDetails.getPassword())) {
             throw new PasswordDoesNotMatchException();
         }
     }
@@ -145,7 +134,7 @@ public class UserServiceImpl implements RegistrationService, HomeUserService, Pr
         ContactDTO contactDTO = new ContactDTO();
 
 
-        for(User user :myUD.getUser().getMyFriendList()) {
+        for (User user :myUD.getUser().getMyFriendList()) {
             contactDTO.getFriendDTOS().add(getFriendDTOByUser(user));
         }
         return contactDTO;

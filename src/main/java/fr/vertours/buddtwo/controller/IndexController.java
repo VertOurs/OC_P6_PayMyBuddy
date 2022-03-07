@@ -10,7 +10,6 @@ public class IndexController {
 
     @GetMapping
     public ModelAndView showBuddyIndexPage() {
-        ModelAndView mv = new ModelAndView("index");
-        return mv;
+        return new ModelAndView("index");
     }
 }
