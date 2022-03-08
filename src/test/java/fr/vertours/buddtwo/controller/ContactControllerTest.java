@@ -1,6 +1,8 @@
 package fr.vertours.buddtwo.controller;
 
 import fr.vertours.buddtwo.dto.AddFriendDTO;
+import fr.vertours.buddtwo.exception.EmailNotPresentInApplicationException;
+import fr.vertours.buddtwo.exception.EmailNotPresentInFriendsException;
 import fr.vertours.buddtwo.security.MyUserDetails;
 import fr.vertours.buddtwo.service.ContactUserService;
 import org.junit.jupiter.api.Test;
@@ -71,6 +73,21 @@ class ContactControllerTest {
 
         assertEquals("addFriend", mvActual.getViewName());
     }
+    @Test
+    void submitAddFriendFormErrors() {
+        MyUserDetails mud = getMyUserDetailsOfJean();
+        AddFriendDTO dto = new AddFriendDTO();
+        when(bindingResult.hasErrors()).thenReturn(false);
+        doThrow(EmailNotPresentInApplicationException.class)
+                .when(userService)
+                .addFriendByEmail(mud.getUsername(), dto.getFriendEmail());
+
+        ModelAndView mvActual =
+                classUnderTest.submitAddFriendForm(
+                new AddFriendDTO(), bindingResult, mud);
+
+        assertEquals("addFriend", mvActual.getViewName());
+    }
 
     @Test
     void submitDelFriendForm() {
@@ -94,6 +111,21 @@ class ContactControllerTest {
         AddFriendDTO dto = new AddFriendDTO();
         when(bindingResult.hasErrors()).thenReturn(true);
         doNothing()
+                .when(userService)
+                .delFriendByEmail(mud.getUsername(), dto.getFriendEmail());
+
+        ModelAndView mvActual =
+                classUnderTest.submitDelFriendForm(
+                        new AddFriendDTO(), bindingResult, mud);
+
+        assertEquals("delFriend", mvActual.getViewName());
+    }
+    @Test
+    void submitDelFriendFormErrors() {
+        MyUserDetails mud = getMyUserDetailsOfJean();
+        AddFriendDTO dto = new AddFriendDTO();
+        when(bindingResult.hasErrors()).thenReturn(false);
+        doThrow(EmailNotPresentInFriendsException.class)
                 .when(userService)
                 .delFriendByEmail(mud.getUsername(), dto.getFriendEmail());
 

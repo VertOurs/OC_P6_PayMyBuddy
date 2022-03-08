@@ -1,5 +1,7 @@
 package fr.vertours.buddtwo.service;
 
+import fr.vertours.buddtwo.exception.EmailNotPresentInApplicationException;
+import fr.vertours.buddtwo.exception.EmailNotPresentInFriendsException;
 import fr.vertours.buddtwo.security.MyUserDetails;
 import fr.vertours.buddtwo.dto.*;
 import fr.vertours.buddtwo.exception.EmailAlreadyPresentException;
@@ -12,7 +14,9 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static fr.vertours.buddtwo.dto.FriendDTO.getFriendDTOByUser;
 
@@ -53,24 +57,42 @@ public class UserServiceImpl implements RegistrationService,
 
     @Transactional
     public void addFriendByEmail(String userEmail, String friendEmail) {
-        //TODO erreurs?
         User user = userRepository.findByEmail(userEmail);
-        User friend = userRepository.findByEmail(friendEmail);
+        User friend = isEmailPresentInApplication(friendEmail);
         user.getMyFriendList().add(friend);
         friend.getMyFriendList().add(user);
         userRepository.save(user);
-
     }
+    private User isEmailPresentInApplication(String email) {
+        Optional<User> isUserExist = Optional.ofNullable(
+                userRepository.findByEmail(email));
+        if(isUserExist.isEmpty()) {
+            throw new EmailNotPresentInApplicationException(email);
+        }
+        return isUserExist.get();
+    }
+
     @Transactional
     public void delFriendByEmail(String userEmail, String friendEmail) {
-        //TODO erreurs?
         User user = userRepository.findByEmail(userEmail);
+        isEmailPresentInFriendList(friendEmail, user);
         User friend = userRepository.findByEmail(friendEmail);
         user.getMyFriendList().remove(friend);
         friend.getMyFriendList().remove(user);
         userRepository.save(user);
 
     }
+    private void isEmailPresentInFriendList(String email, User user) {
+        List<User> isFriendExist = user.getMyFriendList()
+                .stream().filter(f -> f.getEmail().equals(email))
+                .collect(Collectors.toList());
+        if(isFriendExist.isEmpty()) {
+            throw new EmailNotPresentInFriendsException(email);
+        }
+
+    }
+
+
     @Transactional
     public void saveUserByRegistrationDTO(RegistrationDTO regDTO) {
         isEmailAlreadyExistInDataBase(regDTO.getEmail());

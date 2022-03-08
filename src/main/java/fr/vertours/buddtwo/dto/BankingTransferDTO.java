@@ -1,11 +1,12 @@
 package fr.vertours.buddtwo.dto;
 
 
+import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
 
 public class BankingTransferDTO {
 
-
+    @Positive(message = "the number must be positive")
     private BigDecimal amount;
 
     public BankingTransferDTO() {

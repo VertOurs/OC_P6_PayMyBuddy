@@ -1,5 +1,7 @@
 package fr.vertours.buddtwo.controller;
 
+import fr.vertours.buddtwo.exception.EmailNotPresentInApplicationException;
+import fr.vertours.buddtwo.exception.EmailNotPresentInFriendsException;
 import fr.vertours.buddtwo.security.MyUserDetails;
 import fr.vertours.buddtwo.dto.AddFriendDTO;
 import fr.vertours.buddtwo.dto.ContactDTO;
@@ -49,8 +51,14 @@ public class ContactController {
         if (bindingResult.hasErrors()) {
             return new ModelAndView("addFriend");
         }
-        userService.addFriendByEmail(myUD.getUsername(),
-                addFriendDTO.getFriendEmail());
+        try {
+            userService.addFriendByEmail(myUD.getUsername(),
+                    addFriendDTO.getFriendEmail());
+        } catch (EmailNotPresentInApplicationException e) {
+            bindingResult.rejectValue(
+                    "friendEmail", "", e.getMessage());
+            return new ModelAndView("addFriend");
+        }
         return new ModelAndView(new RedirectView("/contact"));
     }
 
@@ -70,8 +78,15 @@ public class ContactController {
         if (bindingResult.hasErrors()) {
             return new ModelAndView("delFriend");
         }
-        userService.delFriendByEmail(
-                myUD.getUsername(), addFriendDTO.getFriendEmail());
+        try {
+            userService.delFriendByEmail(
+                    myUD.getUsername(), addFriendDTO.getFriendEmail());
+        } catch (EmailNotPresentInFriendsException e) {
+            bindingResult.rejectValue(
+                    "friendEmail", "", e.getMessage());
+            return new ModelAndView("delFriend");
+        }
+
         return new ModelAndView(new RedirectView("/contact"));
     }
 }

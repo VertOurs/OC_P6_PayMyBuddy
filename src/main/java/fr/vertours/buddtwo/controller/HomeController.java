@@ -1,5 +1,6 @@
 package fr.vertours.buddtwo.controller;
 
+import fr.vertours.buddtwo.exception.NoEnoughMoneyException;
 import fr.vertours.buddtwo.security.MyUserDetails;
 import fr.vertours.buddtwo.dto.AddBankDTO;
 import fr.vertours.buddtwo.dto.BankingTransferDTO;
@@ -78,7 +79,9 @@ public class HomeController {
         if (bindingResult.hasErrors()) {
             return new ModelAndView("creditApplication");
         }
+
         transferService.creditApplicationAccount(dto, myUD);
+
         return new ModelAndView(new RedirectView("/home"));
     }
 
@@ -96,8 +99,13 @@ public class HomeController {
             @AuthenticationPrincipal MyUserDetails myUD) {
         if (bindingResult.hasErrors()) {
             return new ModelAndView("debitApplication");
-        }
+        } try {
         transferService.debitApplicationAccount(dto, myUD);
+        } catch (NoEnoughMoneyException e) {
+            bindingResult.rejectValue(
+                    "amount", "", e.getMessage());
+            return new ModelAndView("debitApplication");
+        }
         return new ModelAndView(new RedirectView("/home"));
     }
 }

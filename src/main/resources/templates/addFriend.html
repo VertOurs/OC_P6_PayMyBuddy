@@ -21,6 +21,12 @@
                 Please enter the email address your buddy used to create his account
             </p>
         </div>
+        <!-- Form levels error messages here -->
+        <div class="mb-3">
+            <div>
+                <span class="text-danger" th:errors="*{global}"> </span>
+            </div>
+        </div>
         <!-- Email -->
         <div class="mb-3">
             <div>

@@ -21,6 +21,12 @@
                 Please enter the email address of your buddy.
             </p>
         </div>
+        <!-- Form levels error messages here -->
+        <div class="mb-3">
+            <div>
+                <span class="text-danger" th:errors="*{global}"> </span>
+            </div>
+        </div>
         <!-- Email -->
         <div class="mb-3">
             <div>
@@ -31,7 +37,7 @@
             </div>
         </div>
         <!--Register button -->
-        <button type="submit" class="btn btn-primary"  >save my Buddy</button>
+        <button type="submit" class="btn btn-primary"  >delete my Buddy</button>
     </form>
 </main>
 </body>

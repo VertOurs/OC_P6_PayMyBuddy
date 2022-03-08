@@ -57,9 +57,20 @@ public class TransferController {
             BindingResult bindingResult,
             @AuthenticationPrincipal MyUserDetails myUD) {
         if (bindingResult.hasErrors()) {
-            return new ModelAndView("transfer");
+            return new ModelAndView("transferFailed");
         }
-        transferService.makeTransfer(dto, myUD);
+        try {
+            transferService.makeTransfer(dto, myUD);
+        } catch (RuntimeException e) {
+            bindingResult.rejectValue(
+                    "amount", "", e.getMessage());
+            return new ModelAndView("transferFailed");
+        }
+
         return new ModelAndView(new RedirectView("/transfer"));
+    }
+    @GetMapping("/transferFailed")
+    public ModelAndView showFailedPage() {
+        return new ModelAndView("transferFailed");
     }
 }

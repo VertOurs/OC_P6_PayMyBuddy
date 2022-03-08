@@ -2,6 +2,7 @@ package fr.vertours.buddtwo.controller;
 
 import fr.vertours.buddtwo.dto.TransactionDTO;
 import fr.vertours.buddtwo.dto.TransferDTO;
+import fr.vertours.buddtwo.exception.NoEnoughMoneyException;
 import fr.vertours.buddtwo.security.MyUserDetails;
 import fr.vertours.buddtwo.service.TransferService;
 import org.junit.jupiter.api.Test;
@@ -20,6 +21,7 @@ import static fr.vertours.buddtwo.UtilUnitTestMethods.getMyUserDetailsOfJean;
 import static fr.vertours.buddtwo.UtilUnitTestMethods.returnGetTransferDTOTransactionsList;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doThrow;
 
 @SpringBootTest
 class TransferControllerTest {
@@ -94,8 +96,26 @@ class TransferControllerTest {
         doNothing().when(transferService).makeTransfer(dto, mud);
 
         ModelAndView mvActual =
-            classUnderTest.submitTransferForm(dto, bindingResult,mud);
+            classUnderTest.submitTransferForm(dto, bindingResult, mud);
 
-        assertEquals("transfer", mvActual.getViewName());
+        assertEquals("transferFailed", mvActual.getViewName());
+    }
+    @Test
+    void submitTransferFormErrors() {
+        TransferDTO dto = new TransferDTO();
+        MyUserDetails mud = getMyUserDetailsOfJean();
+        when(bindingResult.hasErrors()).thenReturn(false);
+        doThrow(NoEnoughMoneyException.class)
+            .when(transferService).makeTransfer(dto, mud);
+
+        ModelAndView mvActual =
+                classUnderTest.submitTransferForm(dto, bindingResult, mud);
+
+        assertEquals("transferFailed", mvActual.getViewName());
+    }
+    @Test
+    void showFailedPage() {
+        ModelAndView mvActual = classUnderTest.showFailedPage();
+        assertEquals("transferFailed",mvActual.getViewName());
     }
 }

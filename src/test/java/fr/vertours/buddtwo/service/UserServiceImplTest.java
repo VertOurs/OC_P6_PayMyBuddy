@@ -1,6 +1,10 @@
 package fr.vertours.buddtwo.service;
 
 import fr.vertours.buddtwo.dto.*;
+import fr.vertours.buddtwo.exception.EmailAlreadyPresentException;
+import fr.vertours.buddtwo.exception.EmailNotPresentInApplicationException;
+import fr.vertours.buddtwo.exception.EmailNotPresentInFriendsException;
+import fr.vertours.buddtwo.exception.PasswordDoesNotMatchException;
 import fr.vertours.buddtwo.model.BankAccount;
 import fr.vertours.buddtwo.model.Role;
 import fr.vertours.buddtwo.model.User;
@@ -13,6 +17,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import java.util.ArrayList;
 
 
+import static fr.vertours.buddtwo.UtilUnitTestMethods.*;
 import static fr.vertours.buddtwo.dto.FriendDTO.getFriendDTOByUser;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -28,49 +33,6 @@ class UserServiceImplTest {
     UserServiceImpl classUnderTest = new UserServiceImpl(
             userRepository, passwordEncoder, roleService);
 
-    private User returnGeorgeUser() {
-        User george = new User();
-        george.setId(1L);
-        george.setFirstName("George");
-        george.setLastName("Bidon");
-        george.setEmail("george@gmail.com");
-        george.setPassword("georgeTest");
-        return george;
-    }
-    private User returnKateUser() {
-        User kate = new User();
-        kate.setId(2L);
-        kate.setFirstName("Kate");
-        kate.setLastName("Fake");
-        kate.setEmail("kate@gmail.com");
-        return kate;
-    }
-
-    private User returnAdminUserInDB() {
-        User admin = new User();
-        admin.setFirstName("admin");
-        admin.setLastName("admin");
-        admin.setEmail("admin@mail.com");
-        admin.setPassword("admin");
-        return admin;
-    }
-    private RegistrationDTO returnRegDTO() {
-        RegistrationDTO dto = new RegistrationDTO();
-        dto.setFirstName("Harry");
-        dto.setLastName("False");
-        dto.setEmail("harry@gmail.com");
-        dto.setPassword("test");
-        dto.setConfirmation("test");
-        return dto;
-    }
-    private MyUserDetails getMyUserDetailsOfGeorge() {
-        User george = returnGeorgeUser();
-        george.setRoleList(new ArrayList<>());
-        george.getRoleList().add(new Role("USER"));
-        return new MyUserDetails(
-                george.getRoleList(), george.getPassword(),
-                george.getEmail(), george);
-    }
 
     @Test
     void findByEmail() {
@@ -148,27 +110,63 @@ class UserServiceImplTest {
         verify(userRepository, times(0))
                 .save(kate);
     }
-
     @Test
-    void delFriendByEmail() {
+    void addFriendByEmailException() {
         User george = returnGeorgeUser();
         User kate = returnKateUser();
         when(userRepository.findByEmail(george.getEmail()))
                 .thenReturn(george);
         when(userRepository.findByEmail(kate.getEmail()))
-                .thenReturn(kate);
+                .thenReturn(null);
+        Exception exception =
+                assertThrows(EmailNotPresentInApplicationException.class,
+                        () -> classUnderTest.addFriendByEmail(
+                                george.getEmail(), kate.getEmail()));
+        assertTrue(exception.getMessage()
+                .contains("No one is registered with the email  :"));
 
-        classUnderTest.delFriendByEmail(george.getEmail(), kate.getEmail());
+    }
+
+    @Test
+    void delFriendByEmail() {
+        User jean = returnJeanUser();
+        User george = returnGeorgeUser();
+
+        when(userRepository.findByEmail(jean.getEmail()))
+                .thenReturn(jean);
+        when(userRepository.findByEmail(george.getEmail()))
+                .thenReturn(george);
+
+        classUnderTest.delFriendByEmail(jean.getEmail(), george.getEmail());
 
         verify(userRepository, times(2))
                 .findByEmail(any(String.class));
         verify(userRepository, times(1))
-                .save(george);
+                .save(jean);
         verify(userRepository, times(0))
-                .save(kate);
+                .save(george);
     }
 
-    @Test //TODO tester le cas d'exception
+    @Test
+    void delFriendByEmailException() {
+        User kate = returnKateUser();
+        User george = returnGeorgeUser();
+        when(userRepository.findByEmail(kate.getEmail()))
+                .thenReturn(kate);
+        when(userRepository.findByEmail(george.getEmail()))
+                .thenReturn(george);
+        Exception exception =
+                assertThrows(EmailNotPresentInFriendsException.class,
+                        () -> classUnderTest.delFriendByEmail(
+                                kate.getEmail(), george.getEmail()));
+
+        assertTrue(exception.getMessage()
+                .contains("No friend uses this email :"));
+
+
+    }
+
+    @Test
     void saveUserByRegistrationDTO() {
         RegistrationDTO dto = returnRegDTO();
         classUnderTest.saveUserByRegistrationDTO(dto);
@@ -178,6 +176,21 @@ class UserServiceImplTest {
                 .encode(any(String.class));
         verify(userRepository, times(1))
                 .save(any(User.class));
+    }
+
+    @Test
+    void saveUserByRegistrationDTOException() {
+        RegistrationDTO dto = returnRegDTO();
+        User kate = returnKateUser();
+        when(userRepository.findByEmail(dto.getEmail())).thenReturn(kate);
+        Exception exception =
+                assertThrows(EmailAlreadyPresentException.class,
+                        () -> classUnderTest.saveUserByRegistrationDTO(dto));
+
+        assertTrue(exception.getMessage()
+                .contains("was already use in application"));
+
+
     }
 
     @Test
@@ -216,7 +229,7 @@ class UserServiceImplTest {
         assertEquals(actualDto.getEmail(), expectedDto.getEmail());
     }
 
-    @Test //TODO gestion erreurs ?
+    @Test
     void updatePassword() {
         User george = returnGeorgeUser();
         MyUserDetails mud = getMyUserDetailsOfGeorge();
@@ -230,6 +243,25 @@ class UserServiceImplTest {
 
         verify(userRepository, times(1))
                 .save(any(User.class));
+    }
+    @Test
+    void updatePasswordException() {
+        User george = returnGeorgeUser();
+        MyUserDetails mud = getMyUserDetailsOfGeorge();
+        when(userRepository.save(george)).thenReturn(george);
+        ChangePasswordDTO dto = new ChangePasswordDTO();
+        dto.setNewPassword("newPassword");
+        dto.setNewPasswordConfirmation("newPassword");
+        dto.setOldPassword("er");
+
+        Exception exception =
+                assertThrows(PasswordDoesNotMatchException.class,
+                        () -> classUnderTest.updatePassword(dto, mud));
+
+
+        assertTrue(exception.getMessage()
+                .contains("please enter your current password"));
+
     }
 
     @Test

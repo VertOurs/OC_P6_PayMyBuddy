@@ -1,5 +1,6 @@
 package fr.vertours.buddtwo.service;
 
+import fr.vertours.buddtwo.exception.NoEnoughMoneyException;
 import fr.vertours.buddtwo.security.MyUserDetails;
 import fr.vertours.buddtwo.dto.*;
 import fr.vertours.buddtwo.model.Transfer;
@@ -53,13 +54,12 @@ public class TransferServiceImpl implements HomeTransferService,
     @Transactional
     public void debitApplicationAccount(BankingTransferDTO dto,
                                         MyUserDetails myUD)  {
+        isEnoughBalance(dto, myUD.getUser());
         User user = userService.findByEmail(myUD.getUsername());
         BigDecimal amountWithFee = dto.getAmount().add(
                 feeAmount(dto.getAmount()));
         user.setBuddyBalance(user.getBuddyBalance().subtract(amountWithFee));
-        if(isBalanceNegative(user.getBuddyBalance())) {
-            //TODO gestion d'erreur
-        }
+
         Transfer transfer = new Transfer(LocalDateTime.now(),
                 dto.getAmount().negate(), feeAmount(dto.getAmount()),
                 BANKINGTRANSFER, myUD.getUser(), myUD.getUser());
@@ -104,16 +104,14 @@ public class TransferServiceImpl implements HomeTransferService,
                 transactions.size());
     }
 
-
     @Override
     @Transactional
     public void makeTransfer(TransferDTO dto, MyUserDetails myUD) {
+        isEnoughBalance(dto, myUD.getUser());
         User user = userService.findByEmail(myUD.getUsername());
         User friend = userService.findByEmail(dto.getEmail());
         BigDecimal allAmount = dto.getAmount().add(feeAmount(dto.getAmount()));
-        if (isBalanceNegative(user.getBuddyBalance().subtract(allAmount))) {
-            //TODO gestion des erreurs
-        }
+
         Transfer transfer = new Transfer();
         transfer.setAmount(dto.getAmount());
         transfer.setAmountFee(feeAmount(dto.getAmount()));
@@ -126,6 +124,18 @@ public class TransferServiceImpl implements HomeTransferService,
         user.setBuddyBalance(user.getBuddyBalance().subtract(allAmount));
         friend.setBuddyBalance(friend.getBuddyBalance().add(dto.getAmount()));
         userService.updateUser(user);
+    }
+    private void isEnoughBalance(TransferDTO dto, User user) {
+        BigDecimal allAmount = dto.getAmount().add(feeAmount(dto.getAmount()));
+        if (isBalanceNegative(user.getBuddyBalance().subtract(allAmount))) {
+            throw new NoEnoughMoneyException();
+        }
+    }
+    private void isEnoughBalance(BankingTransferDTO dto, User user) {
+        BigDecimal allAmount = dto.getAmount().add(feeAmount(dto.getAmount()));
+        if (isBalanceNegative(user.getBuddyBalance().subtract(allAmount))) {
+            throw new NoEnoughMoneyException();
+        }
     }
 
     public List<TransactionDTO> getTransactionDTOByUser(User user) {
