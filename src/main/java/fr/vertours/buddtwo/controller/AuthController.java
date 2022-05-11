@@ -12,7 +12,6 @@ import org.springframework.web.servlet.ModelAndView;
 public class AuthController {
 
 
-
     private final AuthTransferService transferService;
 
     public AuthController(final AuthTransferService transferService) {

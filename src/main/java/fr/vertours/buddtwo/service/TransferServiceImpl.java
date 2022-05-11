@@ -6,6 +6,8 @@ import fr.vertours.buddtwo.dto.*;
 import fr.vertours.buddtwo.model.Transfer;
 import fr.vertours.buddtwo.model.User;
 import fr.vertours.buddtwo.repository.TransferRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -27,6 +29,8 @@ import static fr.vertours.buddtwo.dto.FriendDTO.getFriendDTOByUser;
 public class TransferServiceImpl implements HomeTransferService,
         TransferService, AuthTransferService {
 
+    private final Logger LOGGER = LoggerFactory.getLogger(TransferServiceImpl.class);
+
     private final TransferRepository repository;
     private final UserServiceImpl userService;
 
@@ -46,7 +50,9 @@ public class TransferServiceImpl implements HomeTransferService,
                 feeAmount(dto.getAmount()), BANKINGTRANSFER, myUD.getUser(),
                 myUD.getUser());
         repository.save(transfer);
+        LOGGER.debug(transfer + "Save in DB");
         userService.updateUser(user);
+        LOGGER.debug("User with ID : " + user.getId() + " Save in DB");
         myUD.setUser(user);
     }
 
@@ -66,6 +72,7 @@ public class TransferServiceImpl implements HomeTransferService,
         repository.save(transfer);
         userService.updateUser(user);
         myUD.setUser(user);
+        LOGGER.debug("debit Application succeed");
     }
 
     private boolean isBalanceNegative(BigDecimal balance) {
