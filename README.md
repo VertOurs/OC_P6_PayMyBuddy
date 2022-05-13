@@ -1,10 +1,3 @@
-# Ne pas oublier avant la soutenance :
-- masquer les identifiants via le Jar. et mettre ne place le dossier
-- verifier le script data.sql 
-- mettre en place les livrables
-- finalisations du PPT
-- ajouter les documents(readme par exemple) au github (présent en local mais pas en ligne)
-
 #Pay My Buddy
 PayMyBuddy is a local and secure web application that allows users to easily exchange money with each other and with their own bank accounts.
 
@@ -21,7 +14,7 @@ After installing all the required softwares you need to create a Database with t
 For this, please run the sql commands present in the file `src/main/resources/Data.sql`.
 
 For more security, the database credentials must be externalized.
-a folder containing the project is accessible at `src/main/resources/BuddyRun`.
+a folder containing the project is accessible at `/BuddyRun`.
 
 move the project where you want it and open terminal in this folder.
 you can run the application with this command :
